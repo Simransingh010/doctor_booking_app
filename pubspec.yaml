@@ -7,8 +7,11 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.3.13
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +20,22 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+  - assets/Images/appointments.png
+  - assets/Images/areuadoctor.png
+  - assets/Images/consultations.png
+  - assets/Images/consultations.png
+  - assets/Images/doctors.png
+  - assets/Images/healthArticles.png
+  - assets/Images/Helpcentre.png
+  - assets/Images/iso.png
+  - assets/Images/medicalRecords.png
+  - assets/Images/orders.png
+  - assets/Images/payment.png
+  - assets/Images/profileIcon.png
+  - assets/Images/reminder.png
+  - assets/Images/settings.png
+  - assets/Images/testBooking.png
+
+
+
