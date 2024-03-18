@@ -1,6 +1,19 @@
-import 'package:doctor_booking_app/models/symptoms.dart';
-import 'package:doctor_booking_app/widgets/image_container.dart';
-import 'package:flutter/material.dart';
+import '../models/symptoms.dart';
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        CircleAvatar,
+        Column,
+        Container,
+        EdgeInsets,
+        FontWeight,
+        NetworkImage,
+        Padding,
+        Row,
+        StatelessWidget,
+        Text,
+        TextStyle,
+        Widget;
 
 class SymptomsGrid extends StatelessWidget {
   const SymptomsGrid({

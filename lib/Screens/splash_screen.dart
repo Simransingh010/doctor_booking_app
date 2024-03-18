@@ -1,4 +1,3 @@
-import 'package:doctor_booking_app/Screens/home_screen.dart';
 import 'package:doctor_booking_app/Screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

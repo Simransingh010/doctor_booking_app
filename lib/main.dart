@@ -1,6 +1,4 @@
-import 'package:doctor_booking_app/Screens/AppointmentScreen.dart';
-import 'package:doctor_booking_app/Screens/login_screen.dart';
-import 'package:doctor_booking_app/Screens/splash_screen.dart';
+import 'Screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
