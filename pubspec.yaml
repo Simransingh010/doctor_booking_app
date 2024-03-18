@@ -7,10 +7,12 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+  carousel_slider: ^4.2.1
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_native_splash: ^2.3.13
+  go_router: ^13.2.1
   google_fonts: ^6.2.1
 
 dev_dependencies:
@@ -36,6 +38,17 @@ flutter:
   - assets/Images/reminder.png
   - assets/Images/settings.png
   - assets/Images/testBooking.png
+  - assets/Images/Calender.png
+  - assets/Images/diabetes.png
+  - assets/Images/consultdoc.jpeg
+  - assets/Images/insurance.jpeg
+  - assets/Images/image1.png
+  - assets/Images/image2.png
+  - assets/Images/image3.png
+  - assets/Images/image4.png
+  - assets/Images/ad1.jpeg
+  - assets/Images/ad2.jpeg
+
 
 
 
