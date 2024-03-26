@@ -1,10 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doctor_booking_app/Screens/home_screen.dart';
 import 'package:doctor_booking_app/models/login_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -42,9 +39,15 @@ class LoginScreen extends StatelessWidget {
             child: LoginCarousel(loginData: CarouselLogin.loginData),
           ),
           Container(
-            color: const Color.fromARGB(255, 41, 50, 140),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 41, 50, 140),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
             height: MediaQuery.of(context).size.height * 0.06,
-            child: Row(
+            child: const Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -52,21 +55,21 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.white,
                   radius: 4,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 2,
                 ),
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 3,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 2,
                 ),
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 3,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 2,
                 ),
                 CircleAvatar(
@@ -77,7 +80,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               children: [
                 TextField(
@@ -90,15 +93,15 @@ class LoginScreen extends StatelessWidget {
                   obscureText: false,
 
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 5),
-                    prefixIcon: Icon(
+                    contentPadding: const EdgeInsets.only(top: 5),
+                    prefixIcon: const Icon(
                       Icons.search,
                       size: 30,
                       color: Colors.black,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.black)),
+                        borderSide: const BorderSide(color: Colors.black)),
                     hintText: 'Enter Your Email',
                     hintStyle: GoogleFonts.lato(fontSize: 14),
                   ),
@@ -116,15 +119,15 @@ class LoginScreen extends StatelessWidget {
                   obscureText: false,
 
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 5),
-                    prefixIcon: Icon(
+                    contentPadding: const EdgeInsets.only(top: 5),
+                    prefixIcon: const Icon(
                       Icons.password,
                       size: 30,
                       color: Colors.black,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.black)),
+                        borderSide: const BorderSide(color: Colors.black)),
                     hintText: 'Password',
                     hintStyle: GoogleFonts.lato(fontSize: 14),
                   ),
@@ -137,18 +140,18 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => const HomeScreen(),
                         ));
                   },
-                  child: Text(
+                  style: ElevatedButton.styleFrom(
+                      fixedSize: const Size.fromWidth(350),
+                      minimumSize: const Size.fromHeight(40),
+                      backgroundColor: const Color.fromARGB(255, 41, 50, 140)),
+                  child: const Text(
                     'Sign In',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size.fromWidth(350),
-                      minimumSize: Size.fromHeight(40),
-                      backgroundColor: const Color.fromARGB(255, 41, 50, 140)),
                 )
               ],
             ),
@@ -169,9 +172,9 @@ class LoginCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        autoPlay: false,
+        autoPlay: true,
         enlargeCenterPage: true,
-        height: 450,
+        height: MediaQuery.of(context).size.height * 0.55,
         enableInfiniteScroll: false,
         viewportFraction: 1.0,
       ),
@@ -180,7 +183,7 @@ class LoginCarousel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Container(
@@ -192,15 +195,15 @@ class LoginCarousel extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 loginData[0].text2,
-                style: TextStyle(
-                  color: Colors.black,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),
@@ -212,7 +215,7 @@ class LoginCarousel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Container(
@@ -224,15 +227,15 @@ class LoginCarousel extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 loginData[1].text2,
-                style: TextStyle(
-                  color: Colors.black,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),
@@ -244,7 +247,7 @@ class LoginCarousel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Container(
@@ -256,15 +259,15 @@ class LoginCarousel extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 loginData[2].text2,
-                style: TextStyle(
-                  color: Colors.black,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),
@@ -276,7 +279,7 @@ class LoginCarousel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Container(
@@ -288,15 +291,15 @@ class LoginCarousel extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 loginData[3].text2,
-                style: TextStyle(
-                  color: Colors.black,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),

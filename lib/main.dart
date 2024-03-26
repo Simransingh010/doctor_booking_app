@@ -1,3 +1,5 @@
+import 'package:doctor_booking_app/Screens/doctor_data.dart';
+
 import 'Screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,12 +15,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: GoogleFonts.latoTextTheme(
+        textTheme: GoogleFonts.robotoTextTheme(
           Theme.of(context).textTheme,
         ),
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
+      initialRoute: '/',
+      routes: {
+        BookingScreen.routeName: (context) => const BookingScreen(),
+      },
     );
   }
 }

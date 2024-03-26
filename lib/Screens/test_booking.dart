@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppointmentScreen extends StatelessWidget {
-  const AppointmentScreen({super.key});
+class TestBooking extends StatelessWidget {
+  const TestBooking({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +45,15 @@ class AppointmentScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextButton(
                 onPressed: () {},
-                child: Text(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                child: const Text(
                   "Book Now",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
                 ),
               ),
             )

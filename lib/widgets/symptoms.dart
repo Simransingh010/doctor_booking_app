@@ -1,10 +1,11 @@
+import 'package:flutter/widgets.dart';
+
 import '../models/symptoms.dart';
 import 'package:flutter/material.dart'
     show
         BuildContext,
         CircleAvatar,
         Column,
-        Container,
         EdgeInsets,
         FontWeight,
         NetworkImage,
@@ -36,7 +37,7 @@ class SymptomsGrid extends StatelessWidget {
 class RowBuilder extends StatelessWidget {
   final List<Symptoms> symptom;
 
-  RowBuilder(this.symptom);
+  const RowBuilder(this.symptom, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +45,14 @@ class RowBuilder extends StatelessWidget {
       children: List.generate(symptom.length, (index) {
         return Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 7,
-            vertical: 20,
+            horizontal: 3,
+            vertical: 14,
           ),
           child: Column(
             children: [
               CircleAvatar(
                 backgroundImage: NetworkImage(symptom[index].imageUrl),
-                radius: 35,
+                radius: 34,
               ),
 
               // ImageContainer(
@@ -59,11 +60,12 @@ class RowBuilder extends StatelessWidget {
               //   width: 40,
               //   height: 40,
               // ),
-              Container(
+              SizedBox(
                 height: 20,
                 child: Text(
                   symptom[index].text1,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 11, fontWeight: FontWeight.bold),
                 ),
                 // child: Image(
                 //   image: NetworkImage(symptom[index].imageUrl),

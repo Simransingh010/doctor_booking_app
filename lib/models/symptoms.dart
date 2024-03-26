@@ -12,42 +12,42 @@ class Symptoms extends Equatable {
   });
 
   static List<Symptoms> symptom = [
-    Symptoms(
+    const Symptoms(
       id: '1',
       imageUrl: 'https://shorturl.at/kJOR7',
       text1: 'Pregnancy Issues',
     ),
-    Symptoms(
+    const Symptoms(
       id: '2',
       imageUrl: 'https://shorturl.at/oCGNU',
       text1: 'Stress & Anxiety',
     ),
-    Symptoms(
+    const Symptoms(
       id: '3',
       imageUrl: 'https://shorturl.at/BCIP5',
       text1: 'Bone & Joint Tissues',
     ),
-    Symptoms(
+    const Symptoms(
       id: '4',
       imageUrl: 'https://shorturl.at/ayLV2',
       text1: 'Diabetes',
     ),
-    Symptoms(
+    const Symptoms(
       id: '5',
       imageUrl: 'https://shorturl.at/koszL',
       text1: 'Stomach Pain    ',
     ),
-    Symptoms(
+    const Symptoms(
       id: '6',
       imageUrl: 'https://rb.gy/pb1fmm',
       text1: 'Pimples & Acne',
     ),
-    Symptoms(
+    const Symptoms(
       id: '7',
       imageUrl: 'https://rb.gy/oezp6d',
       text1: 'Hair & Scalp Issues   ',
     ),
-    Symptoms(
+    const Symptoms(
       id: '8',
       imageUrl: 'https://rb.gy/tjlumb',
       text1: 'Sexual Disorders',
@@ -55,6 +55,5 @@ class Symptoms extends Equatable {
   ];
 
   @override
-  // TODO: implement props
   List<Object?> get props => [imageUrl, text1];
 }

@@ -45,15 +45,15 @@ class OrderScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextButton(
                 onPressed: () {},
-                child: Text(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                child: const Text(
                   "Book Now",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
                 ),
               ),
             )

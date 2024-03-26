@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:doctor_booking_app/Screens/book_doctor.dart';
 import 'package:doctor_booking_app/models/drawer_model.dart';
 import 'package:doctor_booking_app/models/symptoms.dart';
 import 'package:doctor_booking_app/widgets/drawer.dart';
@@ -13,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // DrawerTile tiles = DrawerTile.tiles[0];
     return Scaffold(
+      extendBody: true,
       drawer: Drawers(
         tiles: DrawerTile.tiles,
       ),
@@ -52,12 +54,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              actions: [
+              actions: const [
                 Padding(
-                  padding: const EdgeInsets.only(top: 18, right: 15),
-                  child: const Align(
+                  padding: EdgeInsets.only(top: 18, right: 15),
+                  child: Align(
                     alignment: Alignment.topRight,
-                    child: const Icon(
+                    child: Icon(
                       Icons.wallet,
                       size: 28,
                     ),
@@ -99,7 +101,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 2,
             ),
-            Divider(
+            const Divider(
               height: 0,
               thickness: 0,
               color: Colors.grey,
@@ -116,38 +118,45 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Card(
                   elevation: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: const Column(
-                      children: [
-                        ImageContainer(
-                            padding: EdgeInsets.zero,
-                            imageUrl: 'https://shorturl.at/fqQ18',
-                            width: 170),
-                        SizedBox(
-                          height: 10,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DoctorScreen(),
                         ),
-                        Text(
-                          'Book Appointment',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        Text(
-                          'Confirmed Appointments',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w200,
-                              fontSize: 12,
-                              color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        )
-                      ],
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: const Column(
+                        children: [
+                          ImageContainer(
+                              padding: EdgeInsets.zero,
+                              imageUrl: 'https://shorturl.at/fqQ18',
+                              width: 170),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Book Appointment',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          Text(
+                            'Confirmed Appointments',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w200,
+                                fontSize: 12,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -172,11 +181,15 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: 10,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.only(
+                            top: 13,
+                            left: 6,
+                            right: 6,
+                          ),
                           child: Text(
                             'Instant Video Consult',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
+                                fontWeight: FontWeight.bold, fontSize: 14),
                           ),
                         ),
                         Text(
@@ -197,9 +210,9 @@ class HomeScreen extends StatelessWidget {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Card(
                   elevation: 2,
@@ -208,7 +221,7 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white,
                     ),
-                    height: MediaQuery.of(context).size.height * 0.087,
+                    height: MediaQuery.of(context).size.height * 0.095,
                     width: MediaQuery.of(context).size.width * 0.43,
                     child: const Row(
                       children: [
@@ -248,50 +261,54 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Card(
-                  elevation: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    height: MediaQuery.of(context).size.height * 0.087,
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    child: const Row(
-                      children: [
-                        ImageContainer(
-                          padding: EdgeInsets.zero,
-                          imageUrl: 'https://shorturl.at/moK25',
-                          width: 70,
-                          height: 100,
-                          borderRadius: 15,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Lab Tests',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'Sample Pickup at \n your Home',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10,
-                                    color: Colors.grey),
-                              ),
-                            ],
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Card(
+                    elevation: 2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.095,
+                      width: MediaQuery.of(context).size.width * 0.44,
+                      child: const Row(
+                        children: [
+                          ImageContainer(
+                            padding: EdgeInsets.zero,
+                            imageUrl: 'https://shorturl.at/moK25',
+                            width: 70,
+                            height: 100,
+                            borderRadius: 15,
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Lab Tests',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  'Sample Pickup at \n your Home',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10,
+                                      color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -370,7 +387,7 @@ class HomeScreen extends StatelessWidget {
             color: Colors.grey[300],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.46,
+            height: MediaQuery.of(context).size.height * 0.48,
             child: Column(
               children: [
                 const ListTile(
@@ -405,7 +422,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.34,
+            height: MediaQuery.of(context).size.height * 0.36,
             color: const Color.fromARGB(255, 41, 50, 140),
             child: Column(
               children: [

@@ -1,7 +1,8 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
-class TestBooking extends StatelessWidget {
-  const TestBooking({super.key});
+class ConsultationsScreen extends StatelessWidget {
+  const ConsultationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +46,15 @@ class TestBooking extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextButton(
                 onPressed: () {},
-                child: Text(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                child: const Text(
                   "Book Now",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
                 ),
               ),
             )
