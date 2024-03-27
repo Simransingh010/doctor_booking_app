@@ -1,9 +1,10 @@
 import 'package:doctor_booking_app/Screens/doctor_data.dart';
+import 'package:doctor_booking_app/Screens/vc_appointment.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 
-class DoctorScreen extends StatelessWidget {
-  const DoctorScreen({super.key});
+class DoctorCallScreen extends StatelessWidget {
+  const DoctorCallScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -151,18 +152,18 @@ class DoctorList extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 41, 50, 140)),
                         ),
                         onPressed: () {
                           Navigator.pushNamed(
                             context,
-                            BookingScreen.routeName,
+                            VcBookingScreen.routeName,
                             arguments: doctors[index],
                           );
                         },
                         child: const Text(
-                          'Book Clinic Visit',
+                          'Book Video Consult',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

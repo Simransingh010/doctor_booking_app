@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Doctor extends Equatable {
+  final double latitude;
+  final double longitude;
   final String clinicAddress;
   final String address;
   final String image;
@@ -13,7 +15,9 @@ class Doctor extends Equatable {
   final double bookingFees;
 
   const Doctor(
-      {required this.clinicAddress,
+      {required this.latitude,
+      required this.longitude,
+      required this.clinicAddress,
       required this.experience,
       required this.image,
       required this.address,
@@ -26,6 +30,8 @@ class Doctor extends Equatable {
 
   static List<Doctor> doctors = [
     const Doctor(
+        latitude: 31.327266,
+        longitude: 75.588791,
         clinicAddress: '123, Central Town, Jalandhar',
         address: 'Central Town',
         id: '1',
@@ -37,6 +43,8 @@ class Doctor extends Equatable {
         bookingFees: 700,
         experience: '14 Years of Experience'),
     const Doctor(
+        latitude: 31.19097,
+        longitude: 75.34201,
         clinicAddress: '456, Nakodar Chownk, Jalandhar',
         address: 'Nakodar Chownk',
         image: "https://shorturl.at/nsOW0",
@@ -48,6 +56,8 @@ class Doctor extends Equatable {
         speciality: 'MBBS',
         bookingFees: 300),
     const Doctor(
+        latitude: 31.318134,
+        longitude: 75.588173,
         clinicAddress: '789, BMC Chownk, Jalandhar',
         address: 'BMC Chownk',
         experience: '11 years of Experience',
@@ -60,6 +70,8 @@ class Doctor extends Equatable {
         speciality: "General Surgeon",
         bookingFees: 400),
     const Doctor(
+        longitude: 31.317040,
+        latitude: 75.577751,
         clinicAddress: '101, Guru Nanak Mission Chownk, Jalandhar',
         address: 'Guru Nanak Mission Chownk',
         experience: '13 years of Experience',
@@ -71,6 +83,8 @@ class Doctor extends Equatable {
         speciality: 'Dermatologist',
         bookingFees: 1000),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '567,Kapurthala Chowk, Jalandhar',
         address: 'Kapurthala Chowk',
         experience: '8 years of Experience',
@@ -82,6 +96,8 @@ class Doctor extends Equatable {
         speciality: 'General Surgeon',
         bookingFees: 500),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '890, Rama Mandi, Jalandhar',
         address: 'Rama Mandi',
         experience: '20 years of Experience',
@@ -93,6 +109,8 @@ class Doctor extends Equatable {
         speciality: 'Gynaecologist',
         bookingFees: 400),
     const Doctor(
+        longitude: 31.317040,
+        latitude: 75.577751,
         clinicAddress: '321, Jalandhar Cantt, Jalandhar',
         address: 'Jalandhar Cantt',
         experience: '5 years of Experience',
@@ -104,6 +122,8 @@ class Doctor extends Equatable {
         speciality: "General Surgeon",
         bookingFees: 500),
     const Doctor(
+        latitude: 31.327266,
+        longitude: 75.588791,
         clinicAddress: '654, Model Town, Jalandhar ',
         address: 'Model Town',
         experience: '9 years of Experience',
@@ -115,6 +135,8 @@ class Doctor extends Equatable {
         speciality: 'General Surgeon',
         bookingFees: 400),
     const Doctor(
+        latitude: 31.318134,
+        longitude: 75.588173,
         clinicAddress: '501, Urban Estate, Jalandhar',
         address: 'Urban State',
         experience: "12 years of Experience",
@@ -126,6 +148,8 @@ class Doctor extends Equatable {
         speciality: 'General Surgeon',
         bookingFees: 500),
     const Doctor(
+        longitude: 31.317040,
+        latitude: 75.577751,
         clinicAddress: '543, Adarsh Nagar, Jalandhar',
         address: 'Adarsh Nagar',
         experience: '7 years of Experience',
@@ -137,6 +161,8 @@ class Doctor extends Equatable {
         speciality: 'General Surgeon',
         bookingFees: 500),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '540, Green Model Town, Jalandhar',
         address: 'Green Model Town',
         experience: '6 years of Experience',
@@ -148,6 +174,8 @@ class Doctor extends Equatable {
         speciality: "Sexologist",
         bookingFees: 500),
     const Doctor(
+        longitude: 31.317040,
+        latitude: 75.577751,
         clinicAddress: '5430, Kishanpura, Jalandhar',
         address: 'Kishanpura',
         experience: '10 years of Experience',
@@ -159,6 +187,8 @@ class Doctor extends Equatable {
         speciality: "Sexologist",
         bookingFees: 800),
     const Doctor(
+        latitude: 31.318134,
+        longitude: 75.588173,
         clinicAddress: '23, Basti Sheikh, Jalandhar',
         address: 'Basti Sheikh',
         experience: '4 years of Experience',
@@ -170,6 +200,8 @@ class Doctor extends Equatable {
         speciality: "Psychologist",
         bookingFees: 2000),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '233, Shaheed Udham Singh Nagar, Jalandhar',
         address: 'Shaheed Udham Singh Nagar',
         experience: '8 years of Experience',
@@ -181,6 +213,8 @@ class Doctor extends Equatable {
         speciality: "Psychologist",
         bookingFees: 1800),
     const Doctor(
+        latitude: 31.327266,
+        longitude: 75.588791,
         clinicAddress: '203, Civil Lines, Jalandhar',
         address: 'Civil Lines',
         experience: '3 years of Experience',
@@ -192,6 +226,8 @@ class Doctor extends Equatable {
         speciality: "Psychologist",
         bookingFees: 6000),
     const Doctor(
+        latitude: 31.19097,
+        longitude: 75.34201,
         clinicAddress: '203, Maqsudan, Jalandhar',
         address: 'Maqsudan',
         experience: '3 years of Experience',
@@ -203,6 +239,8 @@ class Doctor extends Equatable {
         speciality: "Dietitian/Nutritionist",
         bookingFees: 400),
     const Doctor(
+        latitude: 31.318134,
+        longitude: 75.588173,
         clinicAddress: '98, Avtar Nagar, Jalandhar',
         address: 'Avtar Nagar',
         experience: '12 years of Experience',
@@ -214,6 +252,8 @@ class Doctor extends Equatable {
         speciality: 'Dietitian/Nutritionist',
         bookingFees: 1000),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '928, Shaheed Bhagat Singh Nagar, Jalandhar',
         address: 'Shaheed Bhagat Singh Nagar',
         experience: '6 years of Experience',
@@ -225,6 +265,8 @@ class Doctor extends Equatable {
         speciality: 'Dentist',
         bookingFees: 200),
     const Doctor(
+        longitude: 31.333960,
+        latitude: 75.562497,
         clinicAddress: '78, Guru Gobind Singh Nagar, Jalandhar',
         address: 'Guru Gobind Singh Nagar',
         experience: '9 years of Experience',
@@ -236,6 +278,8 @@ class Doctor extends Equatable {
         speciality: 'Dentist',
         bookingFees: 500),
     const Doctor(
+        longitude: 31.317040,
+        latitude: 75.577751,
         clinicAddress: '378, Lajpat Nagar, Jalandhar',
         address: 'Lajpat Nagar',
         experience: '4 years of Experience',

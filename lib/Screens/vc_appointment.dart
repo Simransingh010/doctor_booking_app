@@ -1,12 +1,11 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
-import 'package:doctor_booking_app/widgets/location.dart';
 import 'package:flutter/material.dart';
 
-class BookingScreen extends StatelessWidget {
-  const BookingScreen({super.key});
+class VcBookingScreen extends StatelessWidget {
+  const VcBookingScreen({super.key});
 
-  static String get routeName => '/BookingScreen';
+  static String get routeName => '/VcBookingScreen';
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +66,7 @@ class BookingScreen extends StatelessWidget {
               width: 5,
             ),
             Text(
-              'Book In-Clinic Appointment',
+              'Book Video Appointment',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Colors.black,
                   ),
@@ -118,35 +117,6 @@ class BookingScreen extends StatelessWidget {
           Divider(
             color: Colors.grey[300],
             height: 10,
-            thickness: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: SizedBox(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.local_hospital_rounded),
-                      Text('Clinic Address'),
-                    ],
-                  ),
-                  Text(
-                    doctors.clinicAddress,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-            height: 15,
             thickness: 5,
           ),
           Padding(
@@ -352,20 +322,6 @@ class BookingScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: MapWidget(
-                      latitude: doctors.latitude, longitude: doctors.longitude),
                 ),
               ),
               const Divider(
