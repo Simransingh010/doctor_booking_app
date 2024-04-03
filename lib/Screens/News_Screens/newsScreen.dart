@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:doctor_booking_app/Screens/News_Screens/news_article.dart';
 import 'package:doctor_booking_app/apis/news_api.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -598,6 +599,11 @@ class NewsList extends StatelessWidget {
                           ? formatPublishedAt(article.publishedAt!)
                           : "Not Available"),
                       onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          NewsArticle.routeName,
+                          arguments: article,
+                        );
                         // Navigator.pushNamed(
                         //   context,
                         //   ProfilePage.routeName,

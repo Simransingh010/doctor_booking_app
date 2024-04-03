@@ -2,7 +2,6 @@ import 'package:doctor_booking_app/bloc/chat_bot_bloc.dart';
 import 'package:doctor_booking_app/models/chat_message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ChatGemini extends StatefulWidget {
   const ChatGemini({super.key});

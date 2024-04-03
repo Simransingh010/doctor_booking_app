@@ -75,7 +75,7 @@ class MedicineDataScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'INCLUSIVE OF ALL TAXES',
                           style: TextStyle(
                             fontSize: 10,

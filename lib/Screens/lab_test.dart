@@ -1,8 +1,46 @@
 import 'package:doctor_booking_app/models/lab_test.dart';
 import 'package:flutter/material.dart';
 
-class LabTestScreen extends StatelessWidget {
-  const LabTestScreen({super.key});
+class LabTestScreen extends StatefulWidget {
+  const LabTestScreen({Key? key}) : super(key: key);
+
+  @override
+  _LabTestScreenState createState() => _LabTestScreenState();
+}
+
+class _LabTestScreenState extends State<LabTestScreen> {
+  late List<LabTest> _labTests;
+  late List<LabTest> _searchResult;
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _labTests = LabTest.labtests;
+    _searchResult = _labTests;
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterSearchResults(String query) {
+    if (query.isNotEmpty) {
+      setState(() {
+        _searchResult = _labTests
+            .where((labTest) =>
+                labTest.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      });
+    } else {
+      setState(() {
+        _searchResult = _labTests;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +48,7 @@ class LabTestScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Book Lab Test',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -20,30 +56,36 @@ class LabTestScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'All Lab Tests',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterSearchResults,
+                decoration: InputDecoration(
+                  hintText: 'Search lab tests...',
+                  prefixIcon: const Icon(Icons.search),
                 ),
-                Text(
-                  '70+ Body Test Available',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'All Lab Tests',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              '${_searchResult.length} ${_searchResult.length == 1 ? 'Lab Test' : 'Lab Tests'} Available',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             Expanded(
-                flex: 1,
-                child: TestList(
-                  labtests: LabTest.labtests,
-                )),
+              flex: 1,
+              child: TestList(labtests: _searchResult),
+            ),
           ],
         ),
       ),
@@ -54,15 +96,14 @@ class LabTestScreen extends StatelessWidget {
 class TestList extends StatelessWidget {
   const TestList({
     required this.labtests,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final List<LabTest> labtests;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      scrollDirection: Axis.vertical,
       itemCount: (labtests.length / 2).ceil(),
       itemBuilder: (context, rowIndex) {
         final startIndex = rowIndex * 2;
@@ -71,82 +112,51 @@ class TestList extends StatelessWidget {
           startIndex,
           endIndex < labtests.length ? endIndex : labtests.length,
         );
-        return Row(
+        return Column(
           children: currentRowTests.map((labTest) {
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Card(
-                  elevation: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Card(
+                elevation: 1,
+                child: ListTile(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  title: Text(
+                    labTest.name,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 41, 50, 140),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            child: Text(
-                              labTest.name,
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 41, 50, 140),
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.0009,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    '₹ ${labtests[rowIndex].price}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.all(
-                                    Size(
-                                      70,
-                                      30,
-                                    ),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color.fromARGB(255, 41, 50, 140)),
-                                ),
-                                onPressed: () {},
-                                child: const Text(
-                                  'Book',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
+                  ),
+                  subtitle: Text(
+                    '₹ ${labTest.price}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: TextButton(
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                        const Size(70, 30),
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 41, 50, 140),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      'Book',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -159,36 +169,3 @@ class TestList extends StatelessWidget {
     );
   }
 }
-
-//         return Row(
-//           children: currentRowTests.map(labtests){},
-//         )
-
-//         return Expanded(
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Card(
-//               elevation: 1,
-//               child: Column(
-//                 children: [
-//                   const SizedBox(
-//                     height: 20,
-//                   ),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//                       const SizedBox(
-//                         width: 100,
-//                       ),
-//                       Text(labtests[index].name),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }

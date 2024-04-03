@@ -1,8 +1,9 @@
-import 'package:doctor_booking_app/Screens/buy_medicine.dart';
-import 'package:doctor_booking_app/Screens/doctor_data.dart';
+import 'package:doctor_booking_app/Screens/buy_medicine/buy_medicine.dart';
+import 'package:doctor_booking_app/Screens/clinic_consult/doctor_data.dart';
 // import 'package:doctor_booking_app/Screens/map_screen.dart';
-import 'package:doctor_booking_app/Screens/medicine_data.dart';
-import 'package:doctor_booking_app/Screens/vc_appointment.dart';
+import 'package:doctor_booking_app/Screens/buy_medicine/medicine_data.dart';
+import 'package:doctor_booking_app/Screens/News_Screens/news_article.dart';
+import 'package:doctor_booking_app/Screens/video_consult/vc_appointment.dart';
 
 import 'Screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class MainApp extends StatelessWidget {
         MedicineScreen.routeName: (context) => const MedicineScreen(),
         MedicineDataScreen.routeName: (context) => const MedicineDataScreen(),
         VcBookingScreen.routeName: (context) => const VcBookingScreen(),
+        NewsArticle.routeName: (context) => const NewsArticle(),
       },
     );
   }

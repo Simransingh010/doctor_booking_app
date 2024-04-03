@@ -5,18 +5,23 @@ import 'package:flutter/material.dart'
     show
         BuildContext,
         CircleAvatar,
+        Colors,
         Column,
         EdgeInsets,
         FontWeight,
+        Icons,
+        InputBorder,
+        InputDecoration,
         NetworkImage,
         Padding,
         Row,
         StatelessWidget,
         Text,
+        TextField,
         TextStyle,
         Widget;
 
-class SymptomsGrid extends StatelessWidget {
+class SymptomsGrid extends StatefulWidget {
   const SymptomsGrid({
     required this.symptom,
     super.key,
@@ -24,11 +29,16 @@ class SymptomsGrid extends StatelessWidget {
   final List<Symptoms> symptom;
 
   @override
+  State<SymptomsGrid> createState() => _SymptomsGridState();
+}
+
+class _SymptomsGridState extends State<SymptomsGrid> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        RowBuilder(symptom.sublist(0, 4)),
-        RowBuilder(symptom.sublist(4, 8))
+        RowBuilder(widget.symptom.sublist(0, 4)),
+        RowBuilder(widget.symptom.sublist(4, 8))
       ],
     );
   }
