@@ -3,8 +3,10 @@ import 'package:doctor_booking_app/Screens/book_doctor.dart';
 import 'package:doctor_booking_app/Screens/book_vc.dart';
 import 'package:doctor_booking_app/Screens/buy_medicine.dart';
 import 'package:doctor_booking_app/Screens/lab_test.dart';
+import 'package:doctor_booking_app/Screens/newsScreen.dart';
 import 'package:doctor_booking_app/models/drawer_model.dart';
 import 'package:doctor_booking_app/models/symptoms.dart';
+import 'package:doctor_booking_app/pages/chat_gemini.dart';
 import 'package:doctor_booking_app/widgets/drawer.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
 import 'package:doctor_booking_app/widgets/symptoms.dart';
@@ -56,14 +58,50 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              actions: const [
+              actions: [
                 Padding(
-                  padding: EdgeInsets.only(top: 18, right: 15),
+                  padding: const EdgeInsets.only(top: 18, right: 15),
                   child: Align(
                     alignment: Alignment.topRight,
-                    child: Icon(
-                      Icons.wallet,
-                      size: 28,
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ChatGemini(),
+                                ));
+                          },
+                          child: const Icon(
+                            Icons.health_and_safety_sharp,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const NewsScreen(),
+                                ));
+                          },
+                          child: const Icon(
+                            Icons.newspaper_outlined,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Icon(
+                          Icons.wallet,
+                          size: 28,
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -8,7 +8,11 @@ class AppointmentScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        leading: const Icon(Icons.arrow_back_ios),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
         title: const Text(
           'My Bookings',
           style: TextStyle(

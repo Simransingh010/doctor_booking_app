@@ -22,7 +22,7 @@ class MapWidget extends StatelessWidget {
             minZoom: 12.0,
             maxZoom: 17.0,
             initialCenter: LatLng(latitude, longitude),
-            initialZoom: 3.2,
+            initialZoom: 15,
           ),
           children: [
             TileLayer(

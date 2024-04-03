@@ -1,3 +1,4 @@
+import 'package:doctor_booking_app/Screens/appointment_screen.dart';
 import 'package:doctor_booking_app/models/drawer_model.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,15 @@ class Drawers extends StatelessWidget {
                 itemCount: tiles.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if (tiles[index].titleText.toLowerCase() ==
+                          "appointment") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AppointmentScreen()));
+                      }
+                    },
                     child: ListTile(
                       // leading: Icon(Icons.arrow_forward_ios_rounded),
                       leading: Image.asset(
