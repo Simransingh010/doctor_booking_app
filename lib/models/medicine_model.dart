@@ -211,7 +211,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '29',
-      name: 'Insulin (Lantus)',
+      name: 'Insulin',
       imageUrl:
           'https://5.imimg.com/data5/SELLER/Default/2023/8/334812152/KI/UG/UB/194323512/lantus-100-iu-ml-cartridge.webp',
       price: 90,
@@ -365,7 +365,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '51',
-      name: 'Acetylsalicylic Acid',
+      name: 'Acetylsalicylic',
       imageUrl:
           'https://5.imimg.com/data5/SELLER/Default/2022/5/MU/LU/SC/25071451/whatsapp-image-2022-05-28-at-10-00-54-am-500x500.jpg',
       price: 40,
@@ -798,7 +798,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '123',
-      name: 'Calcium Channel Blockers',
+      name: 'Calcium Blockers',
       imageUrl: 'https://via.placeholder.com/150',
       price: 1200,
     ),
@@ -864,7 +864,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '134',
-      name: 'Sterilization Equipment',
+      name: 'Sterilise Equipment',
       imageUrl: 'https://via.placeholder.com/150',
       price: 14000,
     ),
@@ -894,7 +894,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '139',
-      name: 'Cranial Perforators',
+      name: 'Perforator',
       imageUrl: 'https://via.placeholder.com/150',
       price: 19000,
     ),
@@ -924,13 +924,13 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '144',
-      name: 'Intracranial Pressure Monitor',
+      name: 'Pressure Monitor',
       imageUrl: 'https://via.placeholder.com/150',
       price: 24000,
     ),
     const Medicine(
       id: '145',
-      name: 'Neurosurgical Navigation System',
+      name: 'Neurosurgical Navigation',
       imageUrl: 'https://via.placeholder.com/150',
       price: 25000,
     ),
@@ -1020,13 +1020,13 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '160',
-      name: 'Ipratropium Bromide',
+      name: 'Ipratropium ',
       imageUrl: 'https://via.placeholder.com/150',
       price: 55,
     ),
     const Medicine(
       id: '161',
-      name: 'Tiotropium Bromide',
+      name: 'Tiotropium ',
       imageUrl: 'https://via.placeholder.com/150',
       price: 60,
     ),
@@ -1122,7 +1122,7 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '177',
-      name: 'Bronchodilator Inhaler',
+      name: 'Bronchodilator ',
       imageUrl: 'https://via.placeholder.com/150',
       price: 140,
     ),
@@ -1290,55 +1290,55 @@ class Medicine extends Equatable {
     ),
     const Medicine(
       id: '205',
-      name: 'Pseudoephedrine/Guaifenesin',
+      name: 'Pseudoephedrine',
       imageUrl: 'https://via.placeholder.com/150',
       price: 130,
     ),
     const Medicine(
       id: '206',
-      name: 'Chlorpheniramine/Dextromethorphan',
+      name: 'Chlorpheniramine',
       imageUrl: 'https://via.placeholder.com/150',
       price: 135,
     ),
     const Medicine(
       id: '207',
-      name: 'Acetaminophen/Diphenhydramine',
+      name: 'Acetaminophen',
       imageUrl: 'https://via.placeholder.com/150',
       price: 140,
     ),
     const Medicine(
       id: '208',
-      name: 'Guaifenesin/Dextromethorphan',
+      name: 'Guaifenesin',
       imageUrl: 'https://via.placeholder.com/150',
       price: 145,
     ),
     const Medicine(
       id: '209',
-      name: 'Ibuprofen/Pseudoephedrine',
+      name: 'Ibuprofen',
       imageUrl: 'https://via.placeholder.com/150',
       price: 150,
     ),
     const Medicine(
       id: '210',
-      name: 'Naproxen/Pseudoephedrine',
+      name: 'Naproxen',
       imageUrl: 'https://via.placeholder.com/150',
       price: 155,
     ),
     const Medicine(
       id: '211',
-      name: 'Aspirin/Pseudoephedrine',
+      name: 'Aspirin',
       imageUrl: 'https://via.placeholder.com/150',
       price: 160,
     ),
     const Medicine(
       id: '212',
-      name: 'Ipratropium Bromide/Albuterol',
+      name: 'Albuterol',
       imageUrl: 'https://via.placeholder.com/150',
       price: 165,
     ),
     const Medicine(
       id: '213',
-      name: 'Fluticasone/Salmeterol',
+      name: 'Salmeterol',
       imageUrl: 'https://via.placeholder.com/150',
       price: 170,
     ),

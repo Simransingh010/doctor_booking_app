@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:doctor_booking_app/models/news_model.dart';
 import 'package:http/http.dart' as http;
 
-final endpointUrl =
+const endpointUrl =
     'https://newsapi.org/v2/top-headlines?country=in&category=health&apiKey=6504b7d828a445f1a9b293bc1a044b42';
 
 Future<List<Articles>> getArticle() async {

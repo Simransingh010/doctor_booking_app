@@ -1,3 +1,4 @@
+import 'package:doctor_booking_app/Screens/clinic_consult/book_doctor.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/symptoms.dart';
@@ -5,19 +6,14 @@ import 'package:flutter/material.dart'
     show
         BuildContext,
         CircleAvatar,
-        Colors,
         Column,
         EdgeInsets,
         FontWeight,
-        Icons,
-        InputBorder,
-        InputDecoration,
         NetworkImage,
         Padding,
         Row,
         StatelessWidget,
         Text,
-        TextField,
         TextStyle,
         Widget;
 
@@ -55,34 +51,32 @@ class RowBuilder extends StatelessWidget {
       children: List.generate(symptom.length, (index) {
         return Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 3,
+            horizontal: 2,
             vertical: 14,
           ),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(symptom[index].imageUrl),
-                radius: 34,
-              ),
-
-              // ImageContainer(
-              //   imageUrl: symptom[index].imageUrl,
-              //   width: 40,
-              //   height: 40,
-              // ),
-              SizedBox(
-                height: 20,
-                child: Text(
-                  symptom[index].text1,
-                  style: const TextStyle(
-                      fontSize: 11, fontWeight: FontWeight.bold),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                DoctorScreen.routeName,
+              );
+            },
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(symptom[index].imageUrl),
+                  radius: 30,
                 ),
-                // child: Image(
-                //   image: NetworkImage(symptom[index].imageUrl),
-                //   fit: BoxFit.contain,
-                // ),
-              ),
-            ],
+                SizedBox(
+                  height: 18,
+                  child: Text(
+                    symptom[index].text1,
+                    style: const TextStyle(
+                        fontSize: 11, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }),

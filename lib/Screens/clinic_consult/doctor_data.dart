@@ -1,4 +1,5 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:doctor_booking_app/Screens/payment_splash.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:doctor_booking_app/widgets/location.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,13 @@ class BookingScreen extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PaymentSplashScreen(),
+                      ));
+                },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(

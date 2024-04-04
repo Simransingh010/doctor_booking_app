@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 class ChatMessageModel {
   final String role;
   final List<ChatPartModel> parts;

@@ -174,7 +174,7 @@ class LoginCarousel extends StatelessWidget {
       options: CarouselOptions(
         autoPlay: true,
         enlargeCenterPage: true,
-        height: MediaQuery.of(context).size.height * 0.55,
+        height: MediaQuery.of(context).size.height * 0.5,
         enableInfiniteScroll: false,
         viewportFraction: 1.0,
       ),
@@ -188,7 +188,7 @@ class LoginCarousel extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.zero,
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(loginData[0].iconUrl),
@@ -220,7 +220,7 @@ class LoginCarousel extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.zero,
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(loginData[1].iconUrl),
@@ -252,7 +252,7 @@ class LoginCarousel extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.zero,
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(loginData[2].iconUrl),
@@ -284,7 +284,7 @@ class LoginCarousel extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.zero,
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(loginData[3].iconUrl),

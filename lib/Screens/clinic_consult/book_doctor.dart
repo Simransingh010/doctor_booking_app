@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class DoctorScreen extends StatefulWidget {
   const DoctorScreen({Key? key});
+  static String get routeName => '/DoctorScreen';
 
   @override
   State<DoctorScreen> createState() => _DoctorScreenState();

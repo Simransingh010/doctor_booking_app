@@ -1,10 +1,11 @@
-import 'package:doctor_booking_app/Screens/clinic_consult/doctor_data.dart';
 import 'package:doctor_booking_app/Screens/video_consult/vc_appointment.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 
 class DoctorCallScreen extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
   const DoctorCallScreen({Key? key});
+  static String get routeName => '/DoctorCallScreen';
 
   @override
   State<DoctorCallScreen> createState() => _DoctorScreenState();

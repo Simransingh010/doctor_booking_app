@@ -1,6 +1,8 @@
 import 'package:doctor_booking_app/models/medicine_model.dart';
+import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MedicineDataScreen extends StatelessWidget {
   const MedicineDataScreen({super.key});
@@ -101,7 +103,15 @@ class MedicineDataScreen extends StatelessWidget {
                           fixedSize: MaterialStateProperty.all(
                             const Size.fromWidth(150),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<CartProvider>(context, listen: false)
+                            .addToCart(
+                          CartItem(
+                            name: medicines.name,
+                            price: medicines.price.toDouble(),
+                          ),
+                        );
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

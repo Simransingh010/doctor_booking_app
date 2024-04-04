@@ -1,4 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:doctor_booking_app/Screens/all_symptoms_screen.dart';
+import 'package:doctor_booking_app/Screens/symptom_widget_2.dart';
+import 'package:doctor_booking_app/Screens/cart_screen.dart';
 import 'package:doctor_booking_app/Screens/clinic_consult/book_doctor.dart';
 import 'package:doctor_booking_app/Screens/video_consult/book_vc.dart';
 import 'package:doctor_booking_app/Screens/buy_medicine/buy_medicine.dart';
@@ -6,7 +9,7 @@ import 'package:doctor_booking_app/Screens/lab_test.dart';
 import 'package:doctor_booking_app/Screens/News_Screens/newsScreen.dart';
 import 'package:doctor_booking_app/models/drawer_model.dart';
 import 'package:doctor_booking_app/models/symptoms.dart';
-import 'package:doctor_booking_app/pages/chat_gemini.dart';
+import 'package:doctor_booking_app/Screens/chat_gemini.dart';
 import 'package:doctor_booking_app/widgets/drawer.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
 import 'package:doctor_booking_app/widgets/symptoms.dart';
@@ -59,15 +62,6 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 actions: [
-                  IconButton(
-                    icon: Icon(Icons.shopping_cart),
-                    onPressed: () {},
-                    // onPressed: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => CartPage(),
-                    //     )),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18, right: 15),
                     child: Align(
@@ -98,6 +92,23 @@ class HomeScreen extends StatelessWidget {
                           const Icon(
                             Icons.wallet,
                             size: 28,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            child: const Icon(
+                              Icons.shopping_cart,
+                              size: 28,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CartScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -229,22 +240,25 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                top: 13,
+                                top: 8,
                                 left: 6,
                                 right: 6,
                               ),
                               child: Text(
                                 'Instant Video Consult',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
+                                    fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                             ),
-                            Text(
-                              'Connect With 60 Seconds',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 12,
-                                  color: Colors.grey),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4),
+                              child: Text(
+                                'Connect With 60 Seconds',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),
@@ -285,7 +299,7 @@ class HomeScreen extends StatelessWidget {
                             ImageContainer(
                               padding: EdgeInsets.zero,
                               imageUrl: 'https://shorturl.at/atxU9',
-                              width: 70,
+                              width: 65,
                               height: 100,
                               borderRadius: 15,
                             ),
@@ -300,10 +314,10 @@ class HomeScreen extends StatelessWidget {
                                     'Medicines',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 15),
+                                        fontSize: 14),
                                   ),
                                   SizedBox(
-                                    height: 5,
+                                    height: 3,
                                   ),
                                   Text(
                                     'Essential at \n your Doorstep',
@@ -360,16 +374,16 @@ class HomeScreen extends StatelessWidget {
                                       'Lab Tests',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                          fontSize: 14),
                                     ),
                                     SizedBox(
-                                      height: 5,
+                                      height: 3,
                                     ),
                                     Text(
                                       'Sample Pickup at \n your Home',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 10,
+                                          fontSize: 9,
                                           color: Colors.grey),
                                     ),
                                   ],
@@ -490,7 +504,13 @@ class HomeScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AllSymptomScreen(),
+                            ));
+                      },
                       child: const Text(
                         'View All Symptoms',
                         style: TextStyle(
@@ -584,12 +604,13 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          isExtended: true,
           child: Icon(Icons.help),
           onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const ChatGemini();
+                return ChatGemini();
               },
             );
           },

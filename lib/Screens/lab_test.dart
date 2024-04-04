@@ -1,5 +1,9 @@
+import 'package:doctor_booking_app/Screens/buy_medicine/buy_medicine.dart';
+import 'package:doctor_booking_app/Screens/cart_screen.dart';
 import 'package:doctor_booking_app/models/lab_test.dart';
+import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LabTestScreen extends StatefulWidget {
   const LabTestScreen({Key? key}) : super(key: key);
@@ -49,6 +53,77 @@ class _LabTestScreenState extends State<LabTestScreen> {
         title: const Text(
           'Book Lab Test',
           style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MedicineScreen(),
+                      ));
+                },
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  fixedSize: MaterialStateProperty.all(
+                    const Size.fromWidth(175),
+                  ),
+                ),
+                child: const Text(
+                  'Open Medicines',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ));
+                },
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  fixedSize: MaterialStateProperty.all(
+                    const Size.fromWidth(175),
+                  ),
+                ),
+                child: const Text(
+                  'Open Cart',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Padding(
@@ -150,7 +225,24 @@ class TestList extends StatelessWidget {
                         const Color.fromARGB(255, 41, 50, 140),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Add the lab test to the cart with quantity set to 1
+                      Provider.of<CartProvider>(context, listen: false)
+                          .addToCart(
+                        CartItem(
+                          name: labTest.name,
+                          price: labTest.price,
+                          quantity: 1, // Set quantity to 1
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Item Added to Cart Successfully'),
+                        duration: Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                        dismissDirection: DismissDirection.horizontal,
+                        width: 250,
+                      ));
+                    },
                     child: const Text(
                       'Book',
                       style: TextStyle(
