@@ -56,74 +56,69 @@ class _LabTestScreenState extends State<LabTestScreen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MedicineScreen(),
-                      ));
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  fixedSize: MaterialStateProperty.all(
-                    const Size.fromWidth(175),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MedicineScreen(),
+                    ));
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text(
-                  'Open Medicines',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                  ),
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                fixedSize: MaterialStateProperty.all(
+                  const Size.fromWidth(155),
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CartScreen(),
-                      ));
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  fixedSize: MaterialStateProperty.all(
-                    const Size.fromWidth(175),
-                  ),
-                ),
-                child: const Text(
-                  'Open Cart',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                  ),
+              child: const Text(
+                'Open Medicine',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ));
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                fixedSize: MaterialStateProperty.all(
+                  const Size.fromWidth(155),
+                ),
+              ),
+              child: const Text(
+                'Open Cart',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(
