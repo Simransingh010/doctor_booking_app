@@ -1,3 +1,4 @@
+import 'package:doctor_booking_app/models/lab_test.dart';
 import 'package:doctor_booking_app/models/medicine_model.dart';
 import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
@@ -109,7 +110,7 @@ class MedicineDataScreen extends StatelessWidget {
                           CartItem(
                             name: medicines.name,
                             price: medicines.price.toDouble(),
-                          ),
+                          ) as CartItem,
                         );
                       },
                       child: const Row(

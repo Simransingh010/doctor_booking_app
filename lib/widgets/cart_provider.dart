@@ -17,6 +17,7 @@ class CartItem {
 // Define a class to manage the cart
 class CartProvider extends ChangeNotifier {
   List<CartItem> _cartItems = []; // List to store cart items
+  int _labTestCount = 0; // Variable to track the count of lab tests
 
   // Getter to access the cart items
   List<CartItem> get cartItems => _cartItems;
@@ -35,7 +36,15 @@ class CartProvider extends ChangeNotifier {
     }
     // If the item does not exist, add it to the cart
     if (!itemExists) {
-      _cartItems.add(newItem);
+      if (newItem.name == "Lab Test") {
+        // Check if the lab test count is already one
+        if (_labTestCount < 1) {
+          _cartItems.add(newItem);
+          _labTestCount++; // Increment the lab test count
+        }
+      } else {
+        _cartItems.add(newItem);
+      }
     }
     // Notify listeners that the cart has been updated
     notifyListeners();
@@ -44,6 +53,9 @@ class CartProvider extends ChangeNotifier {
   // Method to remove an item from the cart
   void removeFromCart(CartItem itemToRemove) {
     _cartItems.remove(itemToRemove);
+    if (itemToRemove.name == "Lab Test") {
+      _labTestCount--; // Decrement the lab test count
+    }
     // Notify listeners that the cart has been updated
     notifyListeners();
   }

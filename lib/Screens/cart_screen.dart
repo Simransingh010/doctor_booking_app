@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   backgroundColor: MaterialStateProperty.all(Colors.blue),
                   fixedSize: MaterialStateProperty.all(
-                    const Size.fromWidth(250),
+                    const Size.fromWidth(210),
                   ),
                 ),
                 child: const Text(

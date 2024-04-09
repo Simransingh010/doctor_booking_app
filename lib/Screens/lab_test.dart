@@ -228,7 +228,7 @@ class TestList extends StatelessWidget {
                           name: labTest.name,
                           price: labTest.price,
                           quantity: 1, // Set quantity to 1
-                        ),
+                        ) as CartItem,
                       );
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Item Added to Cart Successfully'),

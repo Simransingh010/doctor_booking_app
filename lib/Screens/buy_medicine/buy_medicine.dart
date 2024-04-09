@@ -5,19 +5,19 @@ import 'package:doctor_booking_app/models/medicine_model.dart';
 import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:doctor_booking_app/widgets/image_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cart/flutter_cart.dart';
 import 'package:provider/provider.dart';
 
 class MedicineScreen extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
   const MedicineScreen({Key? key});
 
   static String get routeName => '/MedicineScreen';
 
   @override
-  _MedicineScreenState createState() => _MedicineScreenState();
+  MedicineScreenState createState() => MedicineScreenState();
 }
 
-class _MedicineScreenState extends State<MedicineScreen> {
+class MedicineScreenState extends State<MedicineScreen> {
   final List<Medicine> _medicineList = Medicine.medicines;
   final TextEditingController _searchController = TextEditingController();
   List<Medicine> _filteredMedicines = [];
@@ -71,7 +71,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CartScreen(),
+                      builder: (context) => const CartScreen(),
                     ));
               },
               style: ButtonStyle(
@@ -120,7 +120,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
 
   Widget _buildSearchBox() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -128,7 +128,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
       child: TextField(
         controller: _searchController,
         onChanged: _runFilter,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
             Icons.search,
@@ -166,9 +166,9 @@ class _MedicineScreenState extends State<MedicineScreen> {
 
 class MedicineList extends StatelessWidget {
   const MedicineList({
-    Key? key,
+    super.key,
     required this.medicines,
-  }) : super(key: key);
+  });
 
   final List<Medicine> medicines;
 
@@ -228,7 +228,7 @@ class MedicineList extends StatelessWidget {
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(1),
                         fixedSize: MaterialStateProperty.all(
-                          Size.fromWidth(130),
+                          const Size.fromWidth(130),
                         ),
                       ),
                       onPressed: () {
@@ -239,7 +239,8 @@ class MedicineList extends StatelessWidget {
                             price: medicines[index].price.toDouble(),
                           ),
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
                           behavior: SnackBarBehavior.floating,
                           dismissDirection: DismissDirection.horizontal,
                           width: 250,
