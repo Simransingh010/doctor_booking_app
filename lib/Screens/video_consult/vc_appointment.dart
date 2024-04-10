@@ -1,6 +1,12 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
+import 'package:doctor_booking_app/Screens/payment/payment_screen.dart';
+
+import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:flutter/material.dart';
+
+PaymentOrigin origin = PaymentOrigin.VcBookingScreen;
 
 class VcBookingScreen extends StatelessWidget {
   const VcBookingScreen({super.key});
@@ -10,6 +16,8 @@ class VcBookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final doctors = ModalRoute.of(context)!.settings.arguments as Doctor;
+    final RazorpayService _razorpayService = RazorpayService();
+
     double tax = 49;
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
@@ -29,7 +37,11 @@ class VcBookingScreen extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
+                  _razorpayService.openPayment(
+                      context, totalAmount, PaymentOrigin.VcBookingScreen);
+                },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
@@ -38,7 +50,7 @@ class VcBookingScreen extends StatelessWidget {
                   ),
                   backgroundColor: MaterialStateProperty.all(Colors.blue),
                   fixedSize: MaterialStateProperty.all(
-                    const Size.fromWidth(250),
+                    const Size.fromWidth(200),
                   ),
                 ),
                 child: const Text(
@@ -103,8 +115,11 @@ class VcBookingScreen extends StatelessWidget {
                       Icons.message,
                       size: 17,
                     ),
+                    SizedBox(
+                      width: 3,
+                    ),
                     Text(
-                      'Highly Recommended for Doctor Friendliness',
+                      'Highly Recommended for Doctor \n Friendliness',
                       style: TextStyle(
                         fontSize: 11,
                       ),
@@ -185,12 +200,14 @@ class VcBookingScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.purple,
                           fontWeight: FontWeight.bold,
+                          fontSize: 11,
                         ),
                         children: <InlineSpan>[
                           TextSpan(
                               text: ' Appointment Confirmed Instantly',
                               style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 11,
                               ))
                         ]),
                   ),

@@ -1,6 +1,12 @@
+import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
+import 'package:doctor_booking_app/Screens/payment/payment_screen.dart';
+
+import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+PaymentOrigin origin = PaymentOrigin.CartScreen;
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -10,6 +16,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  final RazorpayService _razorpayService = RazorpayService();
   @override
   Widget build(BuildContext context) {
     int tax = 0;
@@ -35,7 +42,19 @@ class _CartScreenState extends State<CartScreen> {
                 },
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  RazorpayService _razorpayService = RazorpayService();
+                  int totalAmount =
+                      (Provider.of<CartProvider>(context, listen: false)
+                                  .getTotalCost() *
+                              100)
+                          .toInt();
+                  _razorpayService.openPayment(
+                    context,
+                    totalAmount,
+                    PaymentOrigin.CartScreen,
+                  );
+                },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
