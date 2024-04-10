@@ -1,22 +1,66 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
-import 'package:doctor_booking_app/Screens/payment/payment_screen.dart';
 import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:doctor_booking_app/widgets/location.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-PaymentOrigin origin = PaymentOrigin.BookingScreen;
-
-class BookingScreen extends StatelessWidget {
+class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
 
   static String get routeName => '/BookingScreen';
 
   @override
+  State<BookingScreen> createState() => _BookingScreenState();
+}
+
+class _BookingScreenState extends State<BookingScreen> {
+  Razorpay _razorpay = Razorpay();
+
+  @override
+  void initState() {
+    super.initState();
+    // Register event listeners
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  // @override
+  // void dispose() {
+  //   // Dispose Razorpay instance
+  //   _razorpay.clear();
+  //   // super.dispose();
+  // }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+        msg: "Payment Success" + response.paymentId!,
+        toastLength: Toast.LENGTH_SHORT);
+    // print();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SplashScreen1(),
+        ));
+    // Navigate to the successful payment screen
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print("Payment Error: ${response.code} - ${response.message}");
+    // Handle payment error if needed
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print("External Wallet: ${response.walletName}");
+    // Handle external wallet if needed
+  }
+
   Widget build(BuildContext context) {
     final doctors = ModalRoute.of(context)!.settings.arguments as Doctor;
-    final RazorpayService _razorpayService = RazorpayService();
+
     double tax = 49;
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
@@ -38,8 +82,12 @@ class BookingScreen extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
-                  _razorpayService.openPayment(
-                      context, totalAmount, PaymentOrigin.BookingScreen);
+                  _razorpay.open({
+                    "key": "rzp_test_jSK56Q3nuxBxAM",
+                    "amount":
+                        totalAmount, // Amount in paisa (e.g., 50000 paisa = ₹500)
+                    // Other parameters such as order_id, currency, etc. can be included here
+                  });
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(

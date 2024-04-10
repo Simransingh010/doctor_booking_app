@@ -37,8 +37,8 @@ class RazorpayService {
     Navigator.push(
       _context,
       MaterialPageRoute(
-        builder: (context) => SplashScreen1(
-            origin), // Adjust this line if SplashScreen1 doesn't accept an argument
+        builder: (context) =>
+            SplashScreen1(), // Adjust this line if SplashScreen1 doesn't accept an argument
       ),
     );
   }

@@ -1,12 +1,9 @@
-import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
-import 'package:doctor_booking_app/Screens/payment/payment_screen.dart';
-
-import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
+import 'package:doctor_booking_app/Screens/splash_screen_3.dart';
 import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
-PaymentOrigin origin = PaymentOrigin.CartScreen;
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -16,7 +13,62 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final RazorpayService _razorpayService = RazorpayService();
+  Razorpay _razorpay = Razorpay();
+  List<CartItem> finalItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Register event listeners
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  // @override
+  // void dispose() {
+  //   // Dispose Razorpay instance
+  //   _razorpay.clear();
+  //   // super.dispose();
+  // }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+      msg: "Payment Success" + response.paymentId!,
+      toastLength: Toast.LENGTH_SHORT,
+    );
+
+    // Get the cart items before clearing the cart
+    // List<CartItem>
+    finalItems =
+        List.from(Provider.of<CartProvider>(context, listen: false).cartItems);
+    print('items: $finalItems');
+
+    // Navigate to SplashScreen3 with the finalItems
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SplashScreen3(
+          finalItems: finalItems,
+        ),
+      ),
+    );
+
+    // Clear the cart after navigating to SplashScreen3
+    Provider.of<CartProvider>(context, listen: false).clearCart();
+    print('king: $finalItems');
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print("Payment Error: ${response.code} - ${response.message}");
+    // Handle payment error if needed
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print("External Wallet: ${response.walletName}");
+    // Handle external wallet if needed
+  }
+
   @override
   Widget build(BuildContext context) {
     int tax = 0;
@@ -43,17 +95,17 @@ class _CartScreenState extends State<CartScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  RazorpayService _razorpayService = RazorpayService();
                   int totalAmount =
                       (Provider.of<CartProvider>(context, listen: false)
                                   .getTotalCost() *
                               100)
                           .toInt();
-                  _razorpayService.openPayment(
-                    context,
-                    totalAmount,
-                    PaymentOrigin.CartScreen,
-                  );
+                  _razorpay.open({
+                    "key": "rzp_test_jSK56Q3nuxBxAM",
+                    "amount":
+                        totalAmount, // Amount in paisa (e.g., 50000 paisa = ₹500)
+                    // Other parameters such as order_id, currency, etc. can be included here
+                  });
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(

@@ -65,6 +65,12 @@ class Drawers extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => AppointmentScreen()));
+                      } else if (tiles[index].titleText.toLowerCase() ==
+                          "orders") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AppointmentScreen()));
                       }
                     },
                     child: ListTile(

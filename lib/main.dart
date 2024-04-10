@@ -5,6 +5,7 @@ import 'package:doctor_booking_app/Screens/clinic_consult/doctor_data.dart';
 // import 'package:doctor_booking_app/Screens/map_screen.dart';
 import 'package:doctor_booking_app/Screens/buy_medicine/medicine_data.dart';
 import 'package:doctor_booking_app/Screens/News_Screens/news_article.dart';
+import 'package:doctor_booking_app/Screens/orders.dart';
 import 'package:doctor_booking_app/Screens/video_consult/book_vc.dart';
 import 'package:doctor_booking_app/Screens/video_consult/vc_appointment.dart';
 import 'package:doctor_booking_app/widgets/cart_provider.dart';

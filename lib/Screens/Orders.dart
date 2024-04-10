@@ -1,8 +1,19 @@
+import 'package:doctor_booking_app/widgets/cart_provider.dart';
 import 'package:flutter/material.dart';
 
-class OrderScreen extends StatelessWidget {
-  const OrderScreen({super.key});
+class OrderScreen extends StatefulWidget {
+  // static String get routeName => '/OrderScreen';
+  final List<CartItem> finalItems;
 
+  OrderScreen({super.key, required this.finalItems}) {
+    print('Received finalItems: $finalItems');
+  }
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,54 +21,22 @@ class OrderScreen extends StatelessWidget {
         titleSpacing: 0,
         leading: const Icon(Icons.arrow_back_ios),
         title: const Text(
-          'My Bookings',
+          'My Orders',
           style: TextStyle(
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30),
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.25,
-            ),
-            const Image(
-              image: AssetImage("assets/Images/Calender.png"),
-            ),
-            const Text(
-              'You haven\'t Booked any Appointment Yet',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              'Start By Looking for Doctors Nearby',
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                  color: Colors.grey),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                ),
-                child: const Text(
-                  "Book Now",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                ),
-              ),
-            )
-          ],
+        child: ListView.builder(
+          itemCount: widget.finalItems.length,
+          itemBuilder: (context, index) {
+            final item = widget.finalItems[index];
+            return ListTile(
+              title: Text(item.name),
+              subtitle: Text('Price: ${item.price}'),
+              // You can add more details as needed
+            );
+          },
         ),
       ),
     );

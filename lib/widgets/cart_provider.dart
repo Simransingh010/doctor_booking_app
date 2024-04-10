@@ -19,7 +19,7 @@ class CartProvider extends ChangeNotifier {
   List<CartItem> _cartItems = []; // List to store cart items
   int _labTestCount = 0; // Variable to track the count of lab tests
 
-  // Getter to access the cart items
+  // Getter to access the cafrt items
   List<CartItem> get cartItems => _cartItems;
 
   // Method to add an item to the cart
@@ -56,6 +56,13 @@ class CartProvider extends ChangeNotifier {
     if (itemToRemove.name == "Lab Test") {
       _labTestCount--; // Decrement the lab test count
     }
+    // Notify listeners that the cart has been updated
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _cartItems.clear(); // Clear the cart items list
+    _labTestCount = 0; // Reset the lab test count
     // Notify listeners that the cart has been updated
     notifyListeners();
   }
