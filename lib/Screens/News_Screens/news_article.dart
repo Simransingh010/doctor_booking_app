@@ -122,7 +122,7 @@ class NewsInfo extends StatelessWidget {
           ),
           Text(
             maxLines: 200,
-            article.description ?? " Not Given",
+            article.content ?? " Not Given",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.w200,

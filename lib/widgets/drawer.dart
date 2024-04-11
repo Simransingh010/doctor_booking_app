@@ -50,7 +50,7 @@ class Drawers extends StatelessWidget {
             height: 10,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 1,
+            height: MediaQuery.of(context).size.height * 0.8,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: ListView.builder(
@@ -77,7 +77,7 @@ class Drawers extends StatelessWidget {
                       // leading: Icon(Icons.arrow_forward_ios_rounded),
                       leading: Image.asset(
                         tiles[index].imageUrl,
-                        cacheHeight: 30,
+                        cacheHeight: 20,
                       ),
                       title: Text(
                         tiles[index].titleText,
