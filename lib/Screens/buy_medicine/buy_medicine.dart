@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MedicineScreen extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
   const MedicineScreen({Key? key});
 
   static String get routeName => '/MedicineScreen';
@@ -31,86 +30,41 @@ class MedicineScreenState extends State<MedicineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LabTestScreen(),
-                    ));
-              },
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-                fixedSize: MaterialStateProperty.all(
-                  const Size.fromWidth(155),
-                ),
-              ),
-              child: const Text(
-                'Open Lab Tests',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CartScreen(),
-                    ));
-              },
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-                fixedSize: MaterialStateProperty.all(
-                  const Size.fromWidth(155),
-                ),
-              ),
-              child: const Text(
-                'Open Cart',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
         title: const Text(
           'Buy Medicines',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          _buildSearchBox(),
+          Expanded(
+            child: MedicineList(medicines: _filteredMedicines),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildSearchBox(),
-            Expanded(
-              child: MedicineList(medicines: _filteredMedicines),
+            _buildBottomButton(
+              context,
+              'Open Lab Tests',
+              Icons.biotech,
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LabTestScreen()),
+              ),
+            ),
+            _buildBottomButton(
+              context,
+              'Open Cart',
+              Icons.shopping_cart,
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              ),
             ),
           ],
         ),
@@ -120,10 +74,19 @@ class MedicineScreenState extends State<MedicineScreen> {
 
   Widget _buildSearchBox() {
     return Container(
+      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: TextField(
         controller: _searchController,
@@ -162,6 +125,34 @@ class MedicineScreenState extends State<MedicineScreen> {
       _filteredMedicines = results;
     });
   }
+
+  Widget _buildBottomButton(
+    BuildContext context,
+    String label,
+    IconData icon,
+    VoidCallback onPressed,
+  ) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        color: Colors.white,
+      ),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      ),
+    );
+  }
 }
 
 class MedicineList extends StatelessWidget {
@@ -175,85 +166,67 @@ class MedicineList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      scrollDirection: Axis.vertical,
       itemCount: medicines.length,
       itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              MedicineDataScreen.routeName,
-              arguments: medicines[index],
-            );
-          },
-          child: Card(
-            elevation: 0,
-            child: SizedBox(
-              height: 130,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ImageContainer(
-                      imageUrl: medicines[index].imageUrl,
-                      width: 80,
-                      height: 80,
-                      borderRadius: 3,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            medicines[index].name,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          Text(
-                            ' MRP ${medicines[index].price}',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(1),
-                        fixedSize: MaterialStateProperty.all(
-                          const Size.fromWidth(130),
-                        ),
-                      ),
-                      onPressed: () {
-                        Provider.of<CartProvider>(context, listen: false)
-                            .addToCart(
-                          CartItem(
-                            name: medicines[index].name,
-                            price: medicines[index].price.toDouble(),
-                          ),
-                        );
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          dismissDirection: DismissDirection.horizontal,
-                          width: 250,
-                          content: Text('Item Added to Cart Successfully'),
-                          duration: Duration(seconds: 1),
-                        ));
-                      },
-                      child: const Text("Add to Cart"),
-                    ),
-                  ],
+        return Card(
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: ListTile(
+            leading: ImageContainer(
+              imageUrl: medicines[index].imageUrl,
+              width: 60,
+              height: 60,
+              borderRadius: 5,
+            ),
+            title: Text(
+              medicines[index].name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              'MRP ${medicines[index].price}',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            trailing: ElevatedButton(
+              onPressed: () {
+                Provider.of<CartProvider>(context, listen: false).addToCart(
+                  CartItem(
+                    name: medicines[index].name,
+                    price: medicines[index].price.toDouble(),
+                  ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Item Added to Cart'),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: const Text(
+                'Add to Cart',
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
             ),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                MedicineDataScreen.routeName,
+                arguments: medicines[index],
+              );
+            },
           ),
         );
       },

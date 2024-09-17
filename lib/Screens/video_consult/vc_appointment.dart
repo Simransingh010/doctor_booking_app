@@ -1,8 +1,4 @@
 import 'package:android_intent/android_intent.dart';
-import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
-import 'package:doctor_booking_app/Screens/payment/payment_screen.dart';
-
-import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:doctor_booking_app/Screens/video_consult/splash_screen_2.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:flutter/material.dart';
@@ -30,47 +26,46 @@ class _VcBookingScreenState extends State<VcBookingScreen> {
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  // @override
-  // void dispose() {
-  //   // Dispose Razorpay instance
-  //   _razorpay.clear();
-  //   // super.dispose();
-  // }
+  @override
+  void dispose() {
+    // Dispose Razorpay instance
+    _razorpay.clear();
+    super.dispose();
+  }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Fluttertoast.showToast(
-        msg: "Payment Success" + response.paymentId!,
+        msg: "Payment Success: " + response.paymentId!,
         toastLength: Toast.LENGTH_SHORT);
-    // print();
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const SplashScreen2(),
         ));
-    // Navigate to the successful payment screen
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print("Payment Error: ${response.code} - ${response.message}");
-    // Handle payment error if needed
+    Fluttertoast.showToast(
+        msg: "Payment Error: ${response.code} - ${response.message}",
+        toastLength: Toast.LENGTH_SHORT);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    print("External Wallet: ${response.walletName}");
-    // Handle external wallet if needed
+    Fluttertoast.showToast(
+        msg: "External Wallet: ${response.walletName}",
+        toastLength: Toast.LENGTH_SHORT);
   }
 
+  @override
   Widget build(BuildContext context) {
     final doctors = ModalRoute.of(context)!.settings.arguments as Doctor;
-    final RazorpayService _razorpayService = RazorpayService();
-
     double tax = 49;
+    int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
+
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -84,11 +79,9 @@ class _VcBookingScreenState extends State<VcBookingScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
                   _razorpay.open({
-                    "key": "rzp_test_jSK56Q3nuxBxAM",
-                    "amount":
-                        totalAmount, // Amount in paisa (e.g., 50000 paisa = ₹500)
+                    "key": "rzp_test_Lc97DoMrHztQ1O",
+                    "amount": totalAmount,
                     // Other parameters such as order_id, currency, etc. can be included here
                   });
                 },
@@ -246,20 +239,22 @@ class _VcBookingScreenState extends State<VcBookingScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text.rich(
                     TextSpan(
-                        text: 'HealthMate Promise',
-                        style: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                        children: <InlineSpan>[
-                          TextSpan(
-                              text: ' Appointment Confirmed Instantly',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11,
-                              ))
-                        ]),
+                      text: 'HealthMate Promise',
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                      ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' Appointment Confirmed Instantly',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],

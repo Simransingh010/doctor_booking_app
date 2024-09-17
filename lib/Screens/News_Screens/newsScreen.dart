@@ -1,29 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:doctor_booking_app/Screens/News_Screens/news_article.dart';
 import 'package:doctor_booking_app/apis/news_api.dart';
 import 'package:doctor_booking_app/models/news_model.dart';
-import 'package:doctor_booking_app/widgets/image_container.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Doctor Booking App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: NewsScreen(),
-    );
-  }
-}
+import 'package:carousel_slider/carousel_slider.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -33,11 +13,6 @@ class NewsScreen extends StatefulWidget {
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
-String formatPublishedAt(String publishedAt) {
-  DateTime dateTime = DateTime.parse(publishedAt);
-  return timeago.format(dateTime);
-}
-
 class _NewsScreenState extends State<NewsScreen> {
   late Future<List<Articles>> _articlesFuture;
 
@@ -45,268 +20,232 @@ class _NewsScreenState extends State<NewsScreen> {
   void initState() {
     super.initState();
     _articlesFuture = getArticle();
+    print("DEBUG: initState called");
+  }
+
+  ImageProvider getImageProvider(String? url) {
+    print("DEBUG: getImageProvider called with url: $url");
+    if (url != null && url.startsWith('http')) {
+      return NetworkImage(url);
+    } else {
+      return AssetImage('assets/Images/image4.png');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _articlesFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: const Color.fromARGB(255, 41, 50, 140),
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ),
-              title: const Text(
-                'Health News',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: const Color.fromARGB(255, 41, 50, 140),
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ),
-              title: const Text(
-                'Health News',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            body: Center(
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: const Color.fromARGB(255, 41, 50, 140),
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ),
-              title: const Text(
-                'Health News',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            body: ListView(
-              children: [
-                CarouselWidget(articles: snapshot.data),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Text(
-                    'Breaking News',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+    print("DEBUG: build method called");
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      body: FutureBuilder(
+        future: _articlesFuture,
+        builder: (context, snapshot) {
+          print("DEBUG: FutureBuilder state: ${snapshot.connectionState}");
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            print("DEBUG: Error in FutureBuilder: ${snapshot.error}");
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final articles = snapshot.data as List<Articles>;
+            print("DEBUG: Number of articles: ${articles.length}");
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 200.0,
+                  floating: false,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text('Health Insights',
+                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    background: Image(
+                      image: getImageProvider(articles.first.urlToImage),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                NewsList(articles: snapshot.data),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Featured Stories',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                        SizedBox(height: 16.0),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 200.0,
+                            enlargeCenterPage: true,
+                            autoPlay: true,
+                            aspectRatio: 16 / 9,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enableInfiniteScroll: true,
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            viewportFraction: 0.8,
+                          ),
+                          items: articles.take(5).map((article) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return FeaturedStoryWidget(article: article);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: 24.0),
+                        Text('Latest News',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      print("DEBUG: Building NewsCard for index: $index");
+                      return NewsCard(
+                          article: articles[
+                              index + 5]); // +5 to skip the featured stories
+                    },
+                    childCount: articles.length - 5,
+                  ),
+                ),
               ],
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 }
 
-class CarouselWidget extends StatelessWidget {
-  final List<Articles>? articles;
+class FeaturedStoryWidget extends StatelessWidget {
+  final Articles article;
 
-  const CarouselWidget({Key? key, this.articles}) : super(key: key);
+  const FeaturedStoryWidget({Key? key, required this.article})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.36,
-      child: CarouselSlider(
-        items: articles!.map((article) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 0,
-              vertical: 20,
+    print("DEBUG: Building FeaturedStoryWidget for article: ${article.title}");
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, NewsArticle.routeName,
+          arguments: article),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          image: DecorationImage(
+            image: (context.findAncestorStateOfType<_NewsScreenState>()
+                    as _NewsScreenState)
+                .getImageProvider(article.urlToImage),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
             ),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            article.urlToImage ??
-                                'https://www.ledr.com/colours/black.jpg',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            NewsArticle.routeName,
-                            arguments: article,
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          height: double.maxFinite,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 20,
-                                    // left: 10,
-                                  ),
-                                  child: Text(
-                                    article.title ?? ' No DATA',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                Text(
-                                  article.content ?? ' No DATA',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-        options: CarouselOptions(
-          autoPlay: true,
-          enlargeCenterPage: true,
-          height: MediaQuery.of(context).size.height * 0.55,
-          enableInfiniteScroll: false,
-          viewportFraction: 1.0,
+          ),
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                article.title ?? '',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                timeago.format(DateTime.parse(article.publishedAt ?? '')),
+                style: TextStyle(color: Colors.white70),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class NewsList extends StatelessWidget {
-  final List<Articles>? articles;
+class NewsCard extends StatelessWidget {
+  final Articles article;
 
-  const NewsList({
-    Key? key,
-    this.articles,
-  }) : super(key: key);
+  const NewsCard({Key? key, required this.article}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
-      child: CupertinoScrollbar(
-        controller: FixedExtentScrollController(initialItem: 0),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: articles!.length,
-          itemBuilder: (context, index) {
-            final article = articles![index];
-            return ListTile(
-              leading: ImageContainer(
-                imageUrl: article.urlToImage ?? "Not Available",
-                width: 80,
-                height: 80,
+    print("DEBUG: Building NewsCard for article: ${article.title}");
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, NewsArticle.routeName,
+            arguments: article),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image(
+                  image: (context.findAncestorStateOfType<_NewsScreenState>()
+                          as _NewsScreenState)
+                      .getImageProvider(article.urlToImage),
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
-              title: Text(
-                article.title ?? "Not Available",
-                maxLines: 2,
-                overflow: TextOverflow.clip,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+              SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      article.title ?? '',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      article.description ?? '',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 14.0),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      timeago.format(DateTime.parse(article.publishedAt ?? '')),
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
-              subtitle: Text(
-                article.publishedAt != null
-                    ? formatPublishedAt(article.publishedAt!)
-                    : "Not Available",
-              ),
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  NewsArticle.routeName,
-                  arguments: article,
-                );
-              },
-            );
-          },
+            ],
+          ),
         ),
       ),
     );

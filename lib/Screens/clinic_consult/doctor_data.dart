@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'package:android_intent/android_intent.dart';
-import 'package:doctor_booking_app/Screens/payment/payment_origin.dart';
 import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:doctor_booking_app/models/doctor_model.dart';
 import 'package:doctor_booking_app/widgets/location.dart';
@@ -17,436 +17,385 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  Razorpay _razorpay = Razorpay();
+  late Razorpay _razorpay;
 
   @override
   void initState() {
     super.initState();
-    // Register event listeners
+    _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  // @override
-  // void dispose() {
-  //   // Dispose Razorpay instance
-  //   _razorpay.clear();
-  //   // super.dispose();
-  // }
+  @override
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
+  }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Fluttertoast.showToast(
-        msg: "Payment Success" + response.paymentId!,
-        toastLength: Toast.LENGTH_SHORT);
-    // print();
+      msg: "Payment Success" + response.paymentId!,
+      toastLength: Toast.LENGTH_SHORT,
+    );
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SplashScreen1(),
-        ));
-    // Navigate to the successful payment screen
+      context,
+      MaterialPageRoute(builder: (context) => SplashScreen1()),
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     print("Payment Error: ${response.code} - ${response.message}");
-    // Handle payment error if needed
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     print("External Wallet: ${response.walletName}");
-    // Handle external wallet if needed
   }
 
+  @override
   Widget build(BuildContext context) {
     final doctors = ModalRoute.of(context)!.settings.arguments as Doctor;
-
     double tax = 49;
+
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '₹ ${doctors.bookingFees + tax}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
-                  _razorpay.open({
-                    "key": "rzp_test_jSK56Q3nuxBxAM",
-                    "amount":
-                        totalAmount, // Amount in paisa (e.g., 50000 paisa = ₹500)
-                    // Other parameters such as order_id, currency, etc. can be included here
-                  });
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  fixedSize: MaterialStateProperty.all(
-                    const Size.fromWidth(200),
-                  ),
-                ),
-                child: const Text(
-                  'Pay and Book',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       appBar: AppBar(
         title: Row(
           children: [
-            const Icon(
-              Icons.local_hospital_rounded,
-              size: 25,
-              color: Colors.blue,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
+            Icon(Icons.local_hospital_rounded, color: Colors.blue),
+            SizedBox(width: 8),
             Text(
               'Book In-Clinic Appointment',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
             ),
           ],
         ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: ListView(
+        padding: EdgeInsets.all(16),
         children: [
-          ListTile(
-            leading: CircleAvatar(
-              maxRadius: 40,
-              backgroundImage: NetworkImage(doctors.image),
+          _buildDoctorCard(context, doctors),
+          SizedBox(height: 16),
+          _buildClinicInfoCard(context, doctors),
+          SizedBox(height: 16),
+          _buildBillDetailsCard(context, doctors, tax),
+          SizedBox(height: 16),
+          _buildRecommendationCard(context),
+          SizedBox(height: 16),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: MapWidget(
+              latitude: doctors.latitude,
+              longitude: doctors.longitude,
             ),
-            title: Text(
-              doctors.name,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomAppBar(context, doctors, tax),
+    );
+  }
+
+  Widget _buildDoctorCard(BuildContext context, Doctor doctors) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Text(
-                  doctors.speciality,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(doctors.image),
                 ),
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.message,
-                      size: 17,
-                    ),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      maxLines: 2,
-                      'Highly Recommended for Doctor \n Friendliness',
-                      style: TextStyle(
-                        fontSize: 10,
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-            height: 10,
-            thickness: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: SizedBox(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.local_hospital_rounded),
-                      Text('Clinic Address'),
-                    ],
-                  ),
-                  Text(
-                    doctors.clinicAddress,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-            height: 15,
-            thickness: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Clinic Accepts appointments only via Calls',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'To check for Doctor Availability and appointment Confirmation, Please Call the Clinic',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                      const Size.fromWidth(170),
-                    ),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    makePhoneCall(doctors.phoneNo);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(Icons.call, color: Colors.blue),
-                      Text(
-                        'Contact Clinic',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-            height: 20,
-            thickness: 5,
-          ),
-          const SizedBox(
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text.rich(
-                    TextSpan(
-                        text: 'HealthMate Promise',
-                        style: TextStyle(
-                            color: Colors.purple,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12),
-                        children: <InlineSpan>[
-                          TextSpan(
-                              text: ' Appointment Confirmed Instantly',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                              ))
-                        ]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-            height: 15,
-            thickness: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'Bill Details',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Consultation Fee',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text('₹ ${doctors.bookingFees}'),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Service Tax and Fees',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text('₹ $tax'),
-                  ],
-                ),
-              ),
-              Divider(
-                color: Colors.grey[300],
-                endIndent: 20,
-                indent: 20,
-                thickness: 2,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Total Payable',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text('₹ ${doctors.bookingFees + tax}'),
-                  ],
-                ),
-              ),
-              Divider(
-                color: Colors.grey[300],
-                height: 15,
-                thickness: 5,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
+                SizedBox(width: 16),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Highly Recommended For',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      doctors.name,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-                    ListTile(
-                      leading: Icon(Icons.support_agent_sharp),
-                      title: Text(
-                        'Doctor Friendliness',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '90% patients Find the Doctor Friendly and Approachable',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                    SizedBox(height: 4),
+                    Text(
+                      doctors.speciality,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    ListTile(
-                      leading: Icon(Icons.message),
-                      title: Text(
-                        'Detailed Treatment Explanation',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.message, size: 16),
+                        SizedBox(width: 4),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: Text(
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            'Highly Recommended for Doctor Friendliness',
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        '88% Patients recommend the doctor for in-depth explanation of their Health Issues',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              const Divider(
-                thickness: 1,
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Icon(Icons.local_hospital_rounded),
+                SizedBox(width: 8),
+                Text(
+                  'Clinic Address',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: MapWidget(
-                      latitude: doctors.latitude, longitude: doctors.longitude),
+              ],
+            ),
+            SizedBox(height: 8),
+            Text(
+              doctors.clinicAddress,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClinicInfoCard(BuildContext context, Doctor doctors) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Clinic Accepts appointments only via Calls',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'To check for Doctor Availability and appointment Confirmation, Please Call the Clinic',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => makePhoneCall(doctors.phoneNo),
+              icon: Icon(Icons.call),
+              label: Text(
+                'Contact Clinic',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              const Divider(
-                thickness: 1,
-                height: 30,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBillDetailsCard(
+      BuildContext context, Doctor doctors, double tax) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Bill Details',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Consultation Fee',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                Text(
+                  '₹ ${doctors.bookingFees}',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Service Tax and Fees',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                Text(
+                  '₹ $tax',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+            Divider(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total Payable',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  '₹ ${doctors.bookingFees + tax}',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendationCard(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Highly Recommended For',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            SizedBox(height: 16),
+            ListTile(
+              leading: Icon(Icons.support_agent_sharp),
+              title: Text(
+                'Doctor Friendliness',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-            ],
-          ),
-        ],
+              subtitle: Text(
+                '90% patients Find the Doctor Friendly and Approachable',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.message),
+              title: Text(
+                'Detailed Treatment Explanation',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              subtitle: Text(
+                '88% Patients recommend the doctor for in-depth explanation of their Health Issues',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomAppBar(BuildContext context, Doctor doctors, double tax) {
+    return BottomAppBar(
+      color: Colors.white,
+      elevation: 8,
+      shape: CircularNotchedRectangle(),
+      child: Container(
+        height: 70,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '₹ ${doctors.bookingFees + tax}',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                log('CLICKED');
+                int totalAmount = ((doctors.bookingFees + tax).round()) * 100;
+                _razorpay.open({
+                  "key": "rzp_test_Lc97DoMrHztQ1O",
+                  "amount": totalAmount,
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                elevation: 5,
+              ),
+              child: Text(
+                'Pay and Book',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-makePhoneCall(String phoneNumber) {
+void makePhoneCall(String phoneNumber) {
   final intent = AndroidIntent(
-    action: 'android.intent.action.DIAL', // Action for phone call
-    data: 'tel:$phoneNumber', // Phone number to dial
+    action: 'android.intent.action.DIAL',
+    data: 'tel:$phoneNumber',
   );
   intent.launch();
 }

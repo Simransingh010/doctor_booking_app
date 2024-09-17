@@ -77,7 +77,7 @@ class CartProvider extends ChangeNotifier {
 
   // Method to increase the quantity of a specific item in the cart
   void increaseQuantity(CartItem item) {
-    item.quantity++; // Increase the quantity by 1
+    item.quantity++;
     notifyListeners(); // Notify listeners that the cart has been updated
   }
 

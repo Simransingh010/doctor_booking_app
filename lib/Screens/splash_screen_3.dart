@@ -20,7 +20,7 @@ class _SplashScreen3State extends State<SplashScreen3> {
     print('Received simran: ${widget.finalItems}');
 
     // Start a timer to navigate to the next screen after 3 seconds
-    Timer(Duration(seconds: 3), navigateToNextScreen);
+    Timer(const Duration(seconds: 3), navigateToNextScreen);
   }
 
   void navigateToNextScreen() {

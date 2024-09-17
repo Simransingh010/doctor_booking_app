@@ -8,10 +8,10 @@ class MapWidget extends StatefulWidget {
   final double longitude;
 
   MapWidget({
-    Key? key,
+    super.key,
     required this.latitude,
     required this.longitude,
-  }) : super(key: key);
+  });
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -40,8 +40,9 @@ class _MapWidgetState extends State<MapWidget> {
           maxZoom: 17.0,
           initialCenter: LatLng(widget.latitude, widget.longitude),
           initialZoom: 15,
-          interactiveFlags:
-              InteractiveFlag.none, // Disable default interactions
+          
+          // interactiveFlags: InteractiveFlag.none, // Disable default interactions
+              // InteractiveFlag.none, // Disable default interactions
         ),
         children: [
           TileLayer(

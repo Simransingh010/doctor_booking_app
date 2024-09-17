@@ -2,7 +2,6 @@ import 'package:doctor_booking_app/Screens/payment/payment_success.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'payment_origin.dart';
 // import 'splash_screen.dart'; // Import your splash screen file
 
 class RazorpayService {
@@ -26,7 +25,8 @@ class RazorpayService {
   }
 
   void _handlePaymentSuccess(
-      PaymentSuccessResponse response, PaymentOrigin origin) async {
+    PaymentSuccessResponse response,
+  ) async {
     print('handle payment success is called');
     Fluttertoast.showToast(
       msg: "Payment Success" + response.paymentId!,
@@ -53,7 +53,7 @@ class RazorpayService {
     // Handle external wallet, you can use callbacks or streams here to notify UI components
   }
 
-  void openPayment(BuildContext context, int amount, PaymentOrigin origin) {
+  void openPayment(BuildContext context, int amount) {
     _context = context; // Store context for navigation
     // Opening the payment
     _razorpay.open({

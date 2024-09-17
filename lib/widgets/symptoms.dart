@@ -62,18 +62,17 @@ class RowBuilder extends StatelessWidget {
               );
             },
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
                   backgroundImage: NetworkImage(symptom[index].imageUrl),
-                  radius: 30,
+                  radius: MediaQuery.of(context).size.height * 0.05,
                 ),
-                SizedBox(
-                  height: 18,
-                  child: Text(
-                    symptom[index].text1,
-                    style: const TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
+                Text(
+                  symptom[index].text1,
+                  style: const TextStyle(
+                      fontSize: 11, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

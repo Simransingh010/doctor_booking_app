@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398422602218",
+    "project_id": "doctor-booking-app-70f09",
+    "storage_bucket": "doctor-booking-app-70f09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398422602218:android:bdcea3353c420286290293",
+        "android_client_info": {
+          "package_name": "com.example.doctor_booking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9agXJTkNDQaQWn7sSgCFFVSuXXPfOuis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

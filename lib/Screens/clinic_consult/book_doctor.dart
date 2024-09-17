@@ -37,11 +37,16 @@ class _DoctorScreenState extends State<DoctorScreen> {
       body: Column(
         children: [
           _buildSearchBox(),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Expanded(
-            child: DoctorList(doctors: _foundDoctors),
+            child: _foundDoctors.isNotEmpty
+                ? DoctorList(doctors: _foundDoctors)
+                : const Center(
+                    child: Text(
+                      'No doctors found',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
           ),
         ],
       ),
@@ -50,29 +55,29 @@ class _DoctorScreenState extends State<DoctorScreen> {
 
   Widget _buildSearchBox() {
     return Container(
-      height: 60,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TextField(
         controller: _searchController,
         onChanged: _runFilter,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(0),
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.black,
-            size: 20,
-          ),
-          prefixIconConstraints: BoxConstraints(
-            maxHeight: 20,
-            minWidth: 25,
-          ),
+        decoration: InputDecoration(
+          hintText: 'Search doctors',
           border: InputBorder.none,
-          hintText: 'Search',
-          hintStyle: TextStyle(color: Colors.grey),
+          prefixIcon: const Icon(Icons.search),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
         ),
       ),
     );
@@ -104,99 +109,62 @@ class DoctorList extends StatelessWidget {
     return ListView.builder(
       itemCount: doctors.length,
       itemBuilder: (context, index) {
-        return Column(
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                maxRadius: 30,
-                backgroundImage: NetworkImage(doctors[index].image),
-              ),
-              title: Text(
-                doctors[index].name,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              subtitle: Text(
-                doctors[index].speciality,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.black,
-                    ),
-              ),
-              trailing: const Icon(
-                Icons.check_circle_outline,
-                size: 20,
-              ),
+        final doctor = doctors[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 2,
+          child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            leading: CircleAvatar(
+              maxRadius: 30,
+              backgroundImage: NetworkImage(doctor.image),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '₹ ${doctors[index].bookingFees} Consultation Fees',
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
+            title: Text(
+              doctor.name,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          BookingScreen.routeName,
-                          arguments: doctors[index],
-                        );
-                      },
-                      child: const Text(
-                        'Book Clinic Visit',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  doctor.speciality,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '₹ ${doctor.bookingFees} Consultation Fees',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
+              ],
+            ),
+            trailing: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  BookingScreen.routeName,
+                  arguments: doctor,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 41, 50, 140),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: const Text(
+                'Book Visit',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            const Divider(
-              height: 10,
-              thickness: 1,
-              color: Colors.grey,
-            ),
-          ],
+          ),
         );
       },
     );

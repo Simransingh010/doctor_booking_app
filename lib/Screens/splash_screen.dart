@@ -1,4 +1,5 @@
-import 'package:doctor_booking_app/Screens/login_screen.dart';
+import 'package:doctor_booking_app/Screens/home_screen.dart';
+import 'package:doctor_booking_app/firebase%20login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen>
           seconds: 3,
         ), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => HomeScreen()),
       );
     });
   }
