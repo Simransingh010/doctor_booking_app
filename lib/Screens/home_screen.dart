@@ -16,173 +16,199 @@ import 'package:doctor_booking_app/widgets/symptoms.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      drawer: Drawers(
-        tiles: DrawerTile.tiles,
+      drawer: Drawers(tiles: DrawerTile.tiles),
+      appBar: _buildAppBar(context),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: _buildBody(context),
       ),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight * 2.2),
-        child: Column(
-          children: [
-            AppBar(
-              titleSpacing: 0,
-              centerTitle: false,
-              leading: Builder(
-                builder: (context) => IconButton(
-                  alignment: Alignment.topLeft,
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: Image.asset("assets/Images/profileIcon.png"),
-                ),
-              ),
-              title: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.gps_fixed,
-                    size: 20,
-                  ),
-                  const SizedBox(
-                    width: 3,
-                  ),
-                  Text(
-                    'Jalandhar',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.underline),
-                  ),
-                ],
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 18, right: 15),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.newspaper_outlined, size: 28),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewsScreen()),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Icon(Icons.wallet, size: 28),
-                      const SizedBox(width: 10),
-                      IconButton(
-                        icon: const Icon(Icons.shopping_cart, size: 28),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CartScreen()),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              height: MediaQuery.of(context).size.height * 0.06,
-              child: Card(
-                color: Colors.grey[200],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 2,
-                child: TextField(
-                  maxLength: null,
-                  style: GoogleFonts.lato(fontSize: 16, color: Colors.black),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 5),
-                    prefixIcon:
-                        const Icon(Icons.search, size: 30, color: Colors.black),
-                    border: InputBorder.none,
-                    hintText: 'Search for Doctors, Clinics & Hospitals',
-                    hintStyle: GoogleFonts.lato(fontSize: 14),
-                  ),
-                ),
-              ),
-            ),
-            const Divider(height: 0, thickness: 0, color: Colors.grey),
-          ],
+      floatingActionButton: _buildFloatingActionButton(context),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blue.shade400, Colors.blue.shade800],
+          ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildCard(
-                      context,
-                      'Book Appointment',
-                      'Confirmed Appointments',
-                      'https://shorturl.at/fqQ18',
-                      DoctorScreen()),
-                  _buildCard(
-                      context,
-                      'Instant Video Consult',
-                      'Connect Within 60 Seconds',
-                      'https://shorturl.at/psxK4',
-                      DoctorCallScreen()),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildHorizontalCard(
-                      context,
-                      'Medicines',
-                      'Essential at your Doorstep',
-                      'https://shorturl.at/atxU9',
-                      MedicineScreen()),
-                  _buildHorizontalCard(
-                      context,
-                      'Lab Tests',
-                      'Sample Pickup at your Home',
-                      'https://shorturl.at/moK25',
-                      LabTestScreen()),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            _buildFeaturedService(context),
-            const SizedBox(height: 20),
-            _buildServicesRow(context),
-            const SizedBox(height: 20),
-            Divider(height: 20, thickness: 8, color: Colors.grey[300]),
-            _buildSymptomsSection(context),
-            _buildBestOffersCarousel(context),
-            const SizedBox(height: 200),
-          ],
+      leading: Builder(
+        builder: (context) => IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => Scaffold.of(context).openDrawer(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        isExtended: true,
-        child: Icon(Icons.help),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ChatGemini();
-            },
+      title: _buildAppBarTitle(context),
+      actions: _buildAppBarActions(context),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: _buildSearchBar(context),
+      ),
+    );
+  }
+
+  Widget _buildAppBarTitle(BuildContext context) {
+    return FutureBuilder<String>(
+      future: _getCurrentLocation(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(color: Colors.white);
+        } else if (snapshot.hasError) {
+          return const Text('Location unavailable',
+              style: TextStyle(color: Colors.white));
+        } else {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.location_on, color: Colors.white, size: 20),
+              const SizedBox(width: 4),
+              Text(
+                snapshot.data ?? 'Unknown Location',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           );
+        }
+      },
+    );
+  }
+
+  List<Widget> _buildAppBarActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.newspaper_outlined, color: Colors.white),
+        onPressed: () => _navigateTo(context, const NewsScreen()),
+      ),
+      IconButton(
+        icon: const Icon(Icons.wallet, color: Colors.white),
+        onPressed: () {
+          // Handle wallet action
         },
+      ),
+      IconButton(
+        icon: const Icon(Icons.shopping_cart, color: Colors.white),
+        onPressed: () => _navigateTo(context, CartScreen()),
+      ),
+    ];
+  }
+
+  Widget _buildSearchBar(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: TextField(
+        style: GoogleFonts.lato(fontSize: 16, color: Colors.black87),
+        decoration: InputDecoration(
+          hintText: 'Search doctors, clinics, hospitals...',
+          hintStyle: GoogleFonts.lato(fontSize: 16, color: Colors.black54),
+          prefixIcon: const Icon(Icons.search, color: Colors.blue),
+          border: InputBorder.none,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+      ),
+    );
+  }
+
+  Future<String> _getCurrentLocation() async {
+    // Implement location fetching logic here
+    // For demonstration, we'll return a mock location
+    await Future.delayed(
+        const Duration(seconds: 2)); // Simulating network delay
+    return 'New York, NY';
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          _buildServiceCards(context),
+          const SizedBox(height: 20),
+          _buildFeaturedService(context),
+          const SizedBox(height: 20),
+          _buildServicesRow(context),
+          const SizedBox(height: 20),
+          Divider(height: 20, thickness: 8, color: Colors.grey[300]),
+          const SizedBox(height: 20),
+          _buildBestOffersCarousel(context),
+          const SizedBox(height: 20),
+          _buildSymptomsSection(context),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceCards(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildCard(
+            context,
+            'Book Appointment',
+            'Confirmed Appointments',
+            'https://merriam-webster.com/assets/mw/images/article/art-wap-article-main/alt-5d4c7e7746fb1-6705-68b432d17a9a6f2e77528cfff3a63a82@1x.jpg',
+            DoctorScreen(),
+          ),
+          _buildCard(
+            context,
+            'Instant Video Consult',
+            'Connect Within 60 Seconds',
+            'https://shorturl.at/psxK4',
+            DoctorCallScreen(),
+          ),
+        ],
       ),
     );
   }
@@ -191,25 +217,28 @@ class HomeScreen extends StatelessWidget {
       String imageUrl, Widget screen) {
     return Card(
       elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell(
-        onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screen)),
+        onTap: () => _navigateTo(context, screen),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,
           ),
-          height: MediaQuery.of(context).size.height * 0.25,
-          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 0.28, // Increased height
+          width: MediaQuery.of(context).size.width * 0.45, // Increased width
           child: Column(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly, // Added for even spacing
             children: [
               ImageContainer(
                   padding: EdgeInsets.zero, imageUrl: imageUrl, width: 170),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15), // Increased spacing
               Text(
                 title,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                textAlign: TextAlign.center, // Center align text
               ),
               Text(
                 subtitle,
@@ -217,65 +246,9 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.w200,
                     fontSize: 12,
                     color: Colors.grey),
+                textAlign: TextAlign.center, // Center align text
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHorizontalCard(BuildContext context, String title,
-      String subtitle, String imageUrl, Widget screen) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screen)),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
-          ),
-          height: MediaQuery.of(context).size.height * 0.1,
-          width: MediaQuery.of(context).size.width * 0.43,
-          child: Row(
-            children: [
-              ImageContainer(
-                  padding: EdgeInsets.zero,
-                  imageUrl: imageUrl,
-                  width: 65,
-                  height: 100,
-                  borderRadius: 15),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                    const SizedBox(height: 3),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Text(
-                        subtitle,
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 10,
-                            color: Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 10), // Added bottom spacing
             ],
           ),
         ),
@@ -312,15 +285,14 @@ class HomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             image: const DecorationImage(
               image: AssetImage('assets/Images/diabetes.png'),
-              fit: BoxFit
-                  .cover, // Use BoxFit.cover to ensure the image covers the entire container
+              fit: BoxFit.fill,
             ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -333,49 +305,85 @@ class HomeScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const DoctorScreen()),
-          ),
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * 0.28,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: AssetImage('assets/Images/consultdoc.jpeg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const InsuranceScreen()),
-          ),
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * 0.28,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: AssetImage('assets/Images/insurance.jpeg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
+        _buildServiceImage(
+            context, 'assets/Images/consultdoc.jpeg', const DoctorScreen()),
+        _buildServiceImage(
+            context, 'assets/Images/insurance.jpeg', const InsuranceScreen()),
       ],
     );
   }
 
+  Widget _buildServiceImage(
+      BuildContext context, String imagePath, Widget screen) {
+    return InkWell(
+      onTap: () => _navigateTo(context, screen),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.48, // Increased width
+        height: MediaQuery.of(context).size.height * 0.35, // Increased height
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover, // Changed to cover to fill the whole container
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.7),
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  imagePath.contains('consultdoc')
+                      ? 'Connect\nwith doctors\nin 2 mins'
+                      : 'Insure\nyour family',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  imagePath.contains('consultdoc')
+                      ? 'Experts available 24/7'
+                      : 'Explore India\'s\nbest health plans.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSymptomsSection(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.48,
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.55, // Increased height
       child: Column(
         children: [
           const ListTile(
@@ -386,27 +394,29 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(color: Colors.grey),
             ),
           ),
-          SymptomsGrid(
-            symptom: Symptoms.symptom,
+          Expanded(
+            child: SymptomsGrid(symptom: Symptoms.symptom),
           ),
-          OutlinedButton(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                  fixedSize: const Size.fromWidth(350),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AllSymptomScreen())),
+                minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () => _navigateTo(context, const AllSymptomScreen()),
               child: const Text(
                 'View All Symptoms',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.black,
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -415,64 +425,118 @@ class HomeScreen extends StatelessWidget {
   Widget _buildBestOffersCarousel(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.36,
-      color: const Color.fromARGB(255, 41, 50, 140),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 41, 50, 140),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ListTile(
-            leading: CircleAvatar(child: Icon(Icons.percent)),
-            title: Text(
-              'Best Offers',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              'Explore Deals, offers, health Updates and More',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 5),
-          CarouselSlider(
-            items: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: 330,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/Images/ad1.jpeg'),
-                      fit: BoxFit.cover,
-                    ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+            child: Row(
+              children: [
+                const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.percent,
+                      color: Color.fromARGB(255, 41, 50, 140)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Best Offers',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Explore Deals, Offers, Health Updates and More',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: 330,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/Images/ad2.jpeg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-            options: CarouselOptions(
-              autoPlay: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              enlargeCenterPage: false,
-              autoPlayCurve: Curves.decelerate,
-              enlargeStrategy: CenterPageEnlargeStrategy.scale,
-              height: 180,
-              enableInfiniteScroll: false,
-              viewportFraction: 0.8,
+              ],
             ),
           ),
+          Expanded(
+            child: CarouselSlider(
+              items: [
+                _buildCarouselItem('assets/Images/ad1.jpeg'),
+                _buildCarouselItem('assets/Images/ad2.jpeg'),
+              ],
+              options: CarouselOptions(
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 5),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                enlargeCenterPage: true,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                height: 180,
+                viewportFraction: 0.85,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCarouselItem(String imagePath) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        width: 330,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      child: const Icon(Icons.help),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ChatGemini();
+          },
+        );
+      },
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget screen) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => screen,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.easeInOut;
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
       ),
     );
   }
